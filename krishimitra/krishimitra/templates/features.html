@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-success mb-4" data-aos="fade-up">Features</h2>
+    <ul class="nav nav-pills mb-4" id="featuresTabs" role="tablist" data-aos="fade-up">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="ai-tab" data-bs-toggle="pill" data-bs-target="#ai" type="button" role="tab">AI</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="info-tab" data-bs-toggle="pill" data-bs-target="#info" type="button" role="tab">Info</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="assist-tab" data-bs-toggle="pill" data-bs-target="#assist" type="button" role="tab">Assist</button>
+      </li>
+    </ul>
+    <div class="tab-content mb-4" data-aos="fade-up">
+      <div class="tab-pane fade show active" id="ai" role="tabpanel">
+        <p class="text-muted">AI-driven analysis and recommendations.</p>
+      </div>
+      <div class="tab-pane fade" id="info" role="tabpanel">
+        <p class="text-muted">Weather, mandi prices and government schemes.</p>
+      </div>
+      <div class="tab-pane fade" id="assist" role="tabpanel">
+        <p class="text-muted">Voice and multilingual support for accessibility.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="h2">🩺</div>
+          <h5 class="card-title">Disease Detection</h5>
+          <p class="card-text">Upload leaf image.</p>
+
+          <form action="{% url 'detect' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" class="form-control mb-2" required>
+            <button type="submit" class="btn btn-success w-100">
+              Detect Disease
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="50">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">🌾</div>
+            <h5 class="card-title">Crop & Fertilizer Recommendation</h5>
+            <p class="card-text">Enter soil data (placeholder).</p>
+            <form>
+              <input class="form-control mb-2" placeholder="Nitrogen (N)" disabled />
+              <input class="form-control mb-2" placeholder="Phosphorus (P)" disabled />
+              <input class="form-control mb-2" placeholder="Potassium (K)" disabled />
+              <input class="form-control mb-2" placeholder="pH" disabled />
+              <button class="btn btn-success" disabled>Get Recommendation</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">🗣️</div>
+            <h5 class="card-title">Multilingual Voice Support</h5>
+            <p class="card-text">Speak and listen in local languages (placeholder).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">☁️</div>
+            <h5 class="card-title">Weather Forecast</h5>
+            <p class="card-text">Localized weather insights (placeholder).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <a href="{% url 'mandi_prices' %}" class="text-decoration-none text-reset">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <div class="h2">🛒</div>
+              <h5 class="card-title">Mandi Prices</h5>
+              <p class="card-text">Track market prices (live data).</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="250">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">🏛️</div>
+            <h5 class="card-title">Govt. Schemes</h5>
+            <p class="card-text">Discover schemes and benefits (placeholder).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">🗺️</div>
+            <h5 class="card-title">Soil Map Explorer</h5>
+            <p class="card-text">View region soil types and suggested crops (placeholder).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="350">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">🧮</div>
+            <h5 class="card-title">Fertilizer Calculator</h5>
+            <p class="card-text">Estimate NPK needs from area and crop (placeholder).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">📅</div>
+            <h5 class="card-title">Seasonal Calendar</h5>
+            <p class="card-text">Sowing/harvest timelines per crop (placeholder).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+

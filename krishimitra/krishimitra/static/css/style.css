@@ -1,0 +1,44 @@
+:root {
+  --green: #198754;
+  --earth: #8d6e63;
+  --bg: #ffffff;
+  --text: #222222;
+  --card: #ffffff;
+  --muted: #6c757d;
+}
+
+.navbar .nav-link {
+  color: #333;
+}
+.navbar .nav-link:hover {
+  color: var(--green);
+}
+
+.card .h2, .card .display-6 {
+  line-height: 1;
+}
+
+footer .social-links a:hover {
+  color: var(--green) !important;
+}
+
+/* Dark mode */
+body.dark {
+  --bg: #111418;
+  --text: #e9ecef;
+  --card: #1a1f24;
+  background: var(--bg);
+  color: var(--text);
+}
+.dark .navbar,
+.dark .card,
+.dark .dropdown-menu,
+.dark .bg-white {
+  background-color: var(--card) !important;
+  color: var(--text);
+}
+.dark .text-muted { color: #adb5bd !important; }
+.dark .nav-link { color: var(--text) !important; }
+.stat .h2 { font-weight: 700; }
+
+

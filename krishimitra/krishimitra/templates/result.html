@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center;">Disease Detection Result</h2>
+
+<div style="text-align:center; margin-top:40px;">
+
+<h3>Disease Detected:</h3>
+
+<p style="font-size:22px; color:red;">
+{{ result }}
+</p>
+
+<a href="/detect/">Check Another Leaf</a>
+
+</div>
+
+{% endblock %}

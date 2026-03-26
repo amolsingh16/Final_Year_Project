@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-success mb-4" data-aos="fade-up">Contact Us</h2>
+    <div class="row g-4">
+      <div class="col-lg-7" data-aos="fade-up" data-aos-delay="50">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" placeholder="Your Name" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="you@example.com" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" rows="5" placeholder="Your message" disabled></textarea>
+          </div>
+          <button class="btn btn-success" disabled>Send Message</button>
+        </form>
+      </div>
+      <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold">Reach us</h6>
+            <p class="mb-1">Email: support@krishiyoddha.example</p>
+            <p class="mb-3">Phone: +91 90000 00000</p>
+            <div class="ratio ratio-16x9 rounded overflow-hidden bg-light">
+              <div class="d-flex align-items-center justify-content-center text-muted">Map Placeholder</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+

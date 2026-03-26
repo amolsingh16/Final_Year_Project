@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero d-flex align-items-center" style="min-height: 70vh; background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
+  <div class="container text-center text-white">
+    <h1 class="display-5 fw-bold" data-aos="fade-up">Krishi Mitra</h1>
+    <p class="lead mt-3" data-aos="fade-up" data-aos-delay="100">AI-Based Farmer Query Support System</p>
+    <a href="{% url 'features' %}" class="btn btn-success btn-lg mt-4" data-aos="fade-up" data-aos-delay="200">Explore Features</a>
+  </div>
+  </section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center g-4">
+      <div class="col-md-3" data-aos="fade-up">
+        <div class="stat shadow-sm p-4 rounded bg-white">
+          <div class="h2 text-success" data-counter="1500">0</div>
+          <div class="small text-muted">Farmers Reached</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="50">
+        <div class="stat shadow-sm p-4 rounded bg-white">
+          <div class="h2 text-success" data-counter="85">0</div>
+          <div class="small text-muted">Districts Covered</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat shadow-sm p-4 rounded bg-white">
+          <div class="h2 text-success" data-counter="12">0</div>
+          <div class="small text-muted">Languages</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="150">
+        <div class="stat shadow-sm p-4 rounded bg-white">
+          <div class="h2 text-success" data-counter="98">0</div>
+          <div class="small text-muted">% User Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4" data-aos="fade-up">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="display-6 text-success">🌿</div>
+            <h5 class="card-title mt-2">Smart Agriculture</h5>
+            <p class="card-text">Empowering farmers with AI-driven insights and tools.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="display-6 text-success">🗣️</div>
+            <h5 class="card-title mt-2">Multilingual Voice</h5>
+            <p class="card-text">Friendly experience in local languages with voice support.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="display-6 text-success">📊</div>
+            <h5 class="card-title mt-2">Actionable Insights</h5>
+            <p class="card-text">Recommendations for crops, fertilizers, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h3 class="fw-bold text-success text-center mb-4" data-aos="fade-up">How it works</h3>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">1️⃣</div>
+            <h5 class="card-title">Ask or Upload</h5>
+            <p class="card-text">Type your query, speak in your language, or upload a leaf image.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">2️⃣</div>
+            <h5 class="card-title">AI Analysis</h5>
+            <p class="card-text">AI analyzes symptoms, soil data and market/weather info.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="h2">3️⃣</div>
+            <h5 class="card-title">Get Suggestions</h5>
+            <p class="card-text">Receive easy-to-follow, localized recommendations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <h3 class="fw-bold text-success text-center mb-4" data-aos="fade-up">What farmers say</h3>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <p class="mb-1">“Very easy to use and helpful for crop planning.”</p>
+            <small class="text-muted">— Ramesh, Maharashtra</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <p class="mb-1">“Disease advice saved my harvest this season.”</p>
+            <small class="text-muted">— Sita, Uttar Pradesh</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <p class="mb-1">“Voice support in Hindi makes it accessible.”</p>
+            <small class="text-muted">— Harish, Madhya Pradesh</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-success mb-3">Mandi Prices</h2>
+    <form class="row g-2 align-items-end mb-4" method="get">
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label">State</label>
+        <input type="text" class="form-control" name="state" value="{{ state }}" placeholder="e.g., Uttar Pradesh">
+      </div>
+      <div class="col-sm-3 col-md-2">
+        <label class="form-label">Limit</label>
+        <select class="form-select" name="limit">
+          {% for n in limit_options %}
+          <option value="{{ n }}" {% if limit == n %}selected{% endif %}>{{ n }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-3 col-md-2">
+        <button class="btn btn-success w-100">Apply</button>
+      </div>
+    </form>
+
+    {% if error_message %}
+      <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-striped align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Market</th>
+            <th>Commodity</th>
+            <th>Variety</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Modal</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if records %}
+            {% for r in records %}
+              <tr>
+                <td>{{ r.arrival_date }}</td>
+                <td>{{ r.state }}</td>
+                <td>{{ r.district }}</td>
+                <td>{{ r.market }}</td>
+                <td>{{ r.commodity }}</td>
+                <td>{{ r.variety }}</td>
+                <td>{{ r.min_price }}</td>
+                <td>{{ r.max_price }}</td>
+                <td><strong>{{ r.modal_price }}</strong></td>
+                <td>{{ r.price_unit }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="10" class="text-center text-muted py-4">No data available.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="small text-muted mt-2">Data source: data.gov.in</p>
+  </div>
+</section>
+{% endblock %}

@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 import numpy as np
 import tensorflow as tf
 from PIL import Image
-
+import cv2
 
 # ---------------- Load AI Model ----------------
 
@@ -103,9 +103,15 @@ def detect_disease(request):
                 img = request.FILES["image"]
 
                 image = Image.open(img).convert("RGB")
-                image = image.resize((224, 224))
+                image = image.resize((256, 256))
 
-                image = np.array(image) / 255.0
+                # Segmentation apply
+                segmented = segment_disease(image)
+                cv2.imwrite("media/segmented.jpg", cv2.cvtColor(segmented, cv2.COLOR_RGB2BGR))
+                # Resize for model
+                segmented = cv2.resize(segmented, (224,224))
+
+                image = segmented / 255.0
                 image = np.expand_dims(image, axis=0)
 
                 prediction = model.predict(image)[0]
@@ -136,7 +142,26 @@ def detect_disease(request):
         "result": result,
         "error": error,
         "confidence": confidence,
-        "results": results
+        "results": results,
+        "segmented_image": "segmented.jpg"
     }
 
     return render(request, "upload.html", context)
+
+def segment_disease(image):
+
+    img = np.array(image)
+
+    hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+
+    lower = np.array([10,50,50])
+    upper = np.array([35,255,255])
+
+    mask = cv2.inRange(hsv, lower, upper)
+
+    result = img.copy()
+
+    # Diseased area ko red highlight karo
+    result[mask > 0] = [255, 0, 0]
+
+    return result

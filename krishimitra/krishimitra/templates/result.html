@@ -17,3 +17,8 @@
 </div>
 
 {% endblock %}
+
+{% if segmented_image %}
+<h3>Segmented Leaf Image</h3>
+<img src="/media/{{ segmented_image }}" width="300">
+{% endif %}

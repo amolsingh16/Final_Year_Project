@@ -40,6 +40,14 @@
 
 </div>
 
+{% if segmented_image %}
+
+<h3 style="margin-top:20px;">Segmented Leaf</h3>
+
+<img src="/media/{{ segmented_image }}" width="300" style="border-radius:10px;">
+
+{% endif %}
+
 {% endif %}
 
 {% if error %}
@@ -73,3 +81,5 @@ reader.readAsDataURL(event.target.files[0]);
 </script>
 
 {% endblock %}
+
+

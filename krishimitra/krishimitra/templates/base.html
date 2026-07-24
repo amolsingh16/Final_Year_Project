@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
+
+
 <body style="font-family: 'Poppins', sans-serif;">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
@@ -25,15 +28,11 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'mandi_prices' %}">Mandi Prices</a></li> 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="langMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
-                        <ul class="dropdown-menu" aria-labelledby="langMenu">
-                            <li><a class="dropdown-item" href="#">English</a></li>
-                            <li><a class="dropdown-item" href="#">हिन्दी</a></li>
-                            <li><a class="dropdown-item" href="#">मराठी</a></li>
-                            <li><a class="dropdown-item" href="#">தமிழ்</a></li>
-                        </ul>
+                    
+                    <li class="nav-item d-flex align-items-center ms-2">
+                        <div id="google_translate_element"></div>
                     </li>
+                    
                     <li class="nav-item d-flex align-items-center ms-2">
                         <div class="form-check form-switch m-0">
                           <input class="form-check-input" type="checkbox" id="darkModeToggle">
@@ -64,7 +63,24 @@
         AOS.init({ duration: 700, once: true });
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
+
+    <script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr,bn,ta,te,gu,pa',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            },
+            'google_translate_element'
+        );
+    }
+    </script>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script src="{% static 'js/main.js' %}"></script>
+
 </body>
 </html>
 

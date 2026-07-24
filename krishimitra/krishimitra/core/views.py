@@ -94,6 +94,7 @@ def detect_disease(request):
     results = []
 
     if request.method == "POST":
+        language = request.POST.get("language", "en")
 
         if "image" not in request.FILES:
             error = "Please upload an image"
@@ -165,3 +166,4 @@ def segment_disease(image):
     result[mask > 0] = [255, 0, 0]
 
     return result
+

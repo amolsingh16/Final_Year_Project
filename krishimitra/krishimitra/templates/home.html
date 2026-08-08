@@ -1,144 +1,166 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="hero d-flex align-items-center" style="min-height: 70vh; background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
-  <div class="container text-center text-white">
-    <h1 class="display-5 fw-bold" data-aos="fade-up">Krishi Mitra</h1>
-    <p class="lead mt-3" data-aos="fade-up" data-aos-delay="100">AI-Based Farmer Query Support System</p>
-    <a href="{% url 'features' %}" class="btn btn-success btn-lg mt-4" data-aos="fade-up" data-aos-delay="200">Explore Features</a>
+<!-- Hero Section -->
+<section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh; background: linear-gradient(135deg, rgba(27,67,50,0.85), rgba(45,106,79,0.85)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
+  <div class="container text-center text-white my-4">
+    <span class="badge bg-white text-success fs-6 px-3 py-2 rounded-pill fw-semibold mb-3 shadow-sm" data-aos="fade-down">🌿 AI-Powered Digital Kisan Companion</span>
+    <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-up">Krishi Mitra</h1>
+    <p class="lead text-white-50 max-w-700 mx-auto mb-4" data-aos="fade-up" data-aos-delay="100">
+      Smart AI Query Support System empowering Indian farmers with instant plant disease detection, soil NPK fertilizer recommendations, live Mandi prices, and localized weather advisories.
+    </p>
+    
+    <div class="d-flex flex-wrap justify-content-center gap-3" data-aos="fade-up" data-aos-delay="200">
+      <a href="{% url 'detect' %}" class="btn btn-success btn-lg rounded-pill px-4 shadow-sm fw-semibold">
+        📷 Scan Leaf Disease
+      </a>
+      <a href="{% url 'mandi_prices' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 shadow-sm fw-semibold">
+        🛒 Mandi Prices
+      </a>
+      <a href="{% url 'crop_recommendation' %}" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm fw-semibold text-dark">
+        🌱 Soil Advisory
+      </a>
+    </div>
   </div>
-  </section>
+</section>
 
-<section class="py-5">
+<!-- Stats Bar -->
+<section class="py-4 bg-white border-bottom shadow-sm">
   <div class="container">
-    <div class="row text-center g-4">
-      <div class="col-md-3" data-aos="fade-up">
-        <div class="stat shadow-sm p-4 rounded bg-white">
-          <div class="h2 text-success" data-counter="1500">0</div>
-          <div class="small text-muted">Farmers Reached</div>
+    <div class="row text-center g-3">
+      <div class="col-6 col-md-3" data-aos="fade-up">
+        <div class="stat p-2">
+          <div class="h2 fw-bold text-success mb-0" data-counter="15000">0</div>
+          <div class="small text-muted fw-semibold">Farmers Supported</div>
         </div>
       </div>
-      <div class="col-md-3" data-aos="fade-up" data-aos-delay="50">
-        <div class="stat shadow-sm p-4 rounded bg-white">
-          <div class="h2 text-success" data-counter="85">0</div>
-          <div class="small text-muted">Districts Covered</div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
+        <div class="stat p-2">
+          <div class="h2 fw-bold text-success mb-0" data-counter="98">0</div>
+          <div class="small text-muted fw-semibold">% Accuracy Benchmark</div>
         </div>
       </div>
-      <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-        <div class="stat shadow-sm p-4 rounded bg-white">
-          <div class="h2 text-success" data-counter="12">0</div>
-          <div class="small text-muted">Languages</div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat p-2">
+          <div class="h2 fw-bold text-success mb-0" data-counter="28">0</div>
+          <div class="small text-muted fw-semibold">States & Mandis</div>
         </div>
       </div>
-      <div class="col-md-3" data-aos="fade-up" data-aos-delay="150">
-        <div class="stat shadow-sm p-4 rounded bg-white">
-          <div class="h2 text-success" data-counter="98">0</div>
-          <div class="small text-muted">% User Satisfaction</div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="150">
+        <div class="stat p-2">
+          <div class="h2 fw-bold text-success mb-0" data-counter="8">0</div>
+          <div class="small text-muted fw-semibold">Languages Supported</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Core Features Overview -->
 <section class="py-5 bg-light">
   <div class="container">
-    <div class="row text-center">
-      <div class="col-md-4 mb-4" data-aos="fade-up">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="display-6 text-success">🌿</div>
-            <h5 class="card-title mt-2">Smart Agriculture</h5>
-            <p class="card-text">Empowering farmers with AI-driven insights and tools.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="display-6 text-success">🗣️</div>
-            <h5 class="card-title mt-2">Multilingual Voice</h5>
-            <p class="card-text">Friendly experience in local languages with voice support.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="display-6 text-success">📊</div>
-            <h5 class="card-title mt-2">Actionable Insights</h5>
-            <p class="card-text">Recommendations for crops, fertilizers, and more.</p>
-          </div>
-        </div>
-      </div>
+    <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">💡 Core Capabilities</span>
+      <h2 class="fw-bold text-success">Comprehensive Smart Farming Toolkit</h2>
+      <p class="text-muted">Built specifically for Indian agricultural conditions, soil profiles, and regional crops.</p>
     </div>
-  </div>
-</section>
 
-<section class="py-5">
-  <div class="container">
-    <h3 class="fw-bold text-success text-center mb-4" data-aos="fade-up">How it works</h3>
-    <div class="row g-4 align-items-center">
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="h2">1️⃣</div>
-            <h5 class="card-title">Ask or Upload</h5>
-            <p class="card-text">Type your query, speak in your language, or upload a leaf image.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="h2">2️⃣</div>
-            <h5 class="card-title">AI Analysis</h5>
-            <p class="card-text">AI analyzes symptoms, soil data and market/weather info.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="h2">3️⃣</div>
-            <h5 class="card-title">Get Suggestions</h5>
-            <p class="card-text">Receive easy-to-follow, localized recommendations.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="py-5 bg-light">
-  <div class="container">
-    <h3 class="fw-bold text-success text-center mb-4" data-aos="fade-up">What farmers say</h3>
     <div class="row g-4">
       <div class="col-md-4" data-aos="fade-up">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <p class="mb-1">“Very easy to use and helpful for crop planning.”</p>
-            <small class="text-muted">— Ramesh, Maharashtra</small>
-          </div>
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="display-5 text-success mb-3">🩺</div>
+          <h5 class="fw-bold">AI Disease Diagnosis</h5>
+          <p class="text-muted small">Upload plant leaf photos for deep learning disease identification, top-3 confidence scores, and organic/chemical remedies.</p>
+          <a href="{% url 'detect' %}" class="text-success fw-semibold text-decoration-none mt-auto">Open Scanner →</a>
         </div>
       </div>
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <p class="mb-1">“Disease advice saved my harvest this season.”</p>
-            <small class="text-muted">— Sita, Uttar Pradesh</small>
-          </div>
-        </div>
-      </div>
+
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <p class="mb-1">“Voice support in Hindi makes it accessible.”</p>
-            <small class="text-muted">— Harish, Madhya Pradesh</small>
-          </div>
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="display-5 text-success mb-3">🌾</div>
+          <h5 class="fw-bold">Soil NPK & Fertilizer Calculator</h5>
+          <p class="text-muted small">Input soil test parameters to receive optimal crop suitability rankings and exact Urea/DAP/MOP bag calculations.</p>
+          <a href="{% url 'crop_recommendation' %}" class="text-success fw-semibold text-decoration-none mt-auto">Calculate Dose →</a>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="display-5 text-success mb-3">🛒</div>
+          <h5 class="fw-bold">Live Agmarknet Mandi Prices</h5>
+          <p class="text-muted small">Fetch daily wholesale mandi market rates across Indian districts with commodity filtering and offline fallback resilience.</p>
+          <a href="{% url 'mandi_prices' %}" class="text-success fw-semibold text-decoration-none mt-auto">Check Rates →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h3 class="fw-bold text-success mb-2">How Krishi Mitra Works</h3>
+      <p class="text-muted">3 simple steps to get instant agricultural solutions.</p>
+    </div>
+
+    <div class="row g-4 text-center">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
+          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">1</div>
+          <h5 class="fw-bold">Ask, Speak, or Upload</h5>
+          <p class="text-muted small">Upload a leaf photo, enter soil test NPK values, or ask a query in Hindi/English using voice input.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
+          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">2</div>
+          <h5 class="fw-bold">AI & API Processing</h5>
+          <p class="text-muted small">CNN model analyzes crop health while real-time Agmarknet & Open-Meteo APIs fetch market & weather metrics.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
+          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">3</div>
+          <h5 class="fw-bold">Actionable Solutions</h5>
+          <p class="text-muted small">Receive organic treatments, chemical doses, spraying schedules, and government scheme guidance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Farmer Reviews -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-4" data-aos="fade-up">
+      <h3 class="fw-bold text-success mb-2">What Farmers Say</h3>
+      <p class="text-muted">Feedback from agricultural users across India.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <p class="mb-3 text-secondary">“The tomato leaf disease scanner identified early blight in my crop immediately. The organic treatment saved my yield this season.”</p>
+          <div class="fw-bold text-success">— Ramesh Kumar, Uttar Pradesh</div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <p class="mb-3 text-secondary">“Checking daily Mandi prices before selling my produce helped me get a much better price in the local market.”</p>
+          <div class="fw-bold text-success">— Harish Patel, Gujarat</div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <p class="mb-3 text-secondary">“The voice assistant feature in Hindi makes it very easy to use for everyone in our village.”</p>
+          <div class="fw-bold text-success">— Sunita Devi, Madhya Pradesh</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 {% endblock %}
-
-

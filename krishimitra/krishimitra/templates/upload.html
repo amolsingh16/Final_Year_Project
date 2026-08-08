@@ -1,85 +1,205 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="py-5">
+  <div class="container" style="max-width: 850px;">
+    
+    <div class="text-center mb-4">
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🌿 AI Computer Vision</span>
+      <h2 class="fw-bold text-success">Plant Disease Detection</h2>
+      <p class="text-muted">Upload a clear photo of the leaf to instantly detect plant diseases and get organic/chemical treatment guides.</p>
+    </div>
 
-<div class="container" style="max-width:600px; margin:auto; margin-top:50px;">
+    <!-- Upload Card -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 text-center mb-4">
+      <div class="card-body">
+        
+        <form method="POST" enctype="multipart/form-data" id="diseaseForm">
+          {% csrf_token %}
 
-<div style="background:white; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.2); text-align:center;">
+          <div class="border border-2 border-dashed rounded-4 p-4 mb-3 bg-light position-relative hover-shadow" id="dropArea">
+            <div class="py-3">
+              <span class="display-4 text-success d-block mb-2">📷</span>
+              <h6 class="fw-bold text-dark">Drag & Drop Leaf Image Here</h6>
+              <p class="small text-muted mb-3">Supports JPG, JPEG, PNG format</p>
+              <input type="file" name="image" id="fileInput" accept="image/*" required onchange="previewImage(event)" class="form-control d-none">
+              <button type="button" class="btn btn-success rounded-pill px-4" onclick="document.getElementById('fileInput').click()">Browse Image</button>
+            </div>
+            
+            <img id="preview" style="display:none; max-height:280px; width:auto;" class="mx-auto rounded-3 shadow-sm mt-3">
+          </div>
 
-<h2 style="color:#2e7d32;">🌿 Plant Disease Detection</h2>
+          <div class="mt-4">
+            <button type="submit" id="submitBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
+              🔍 Detect Disease & Remedies
+            </button>
+          </div>
+        </form>
 
-<p style="color:gray;">Upload a leaf image to detect plant disease using AI.</p>
+      </div>
+    </div>
 
-<form method="POST" enctype="multipart/form-data">
+    <!-- Error Alert -->
+    {% if error %}
+    <div class="alert alert-danger rounded-4 shadow-sm" role="alert">
+      ⚠️ {{ error }}
+    </div>
+    {% endif %}
 
-{% csrf_token %}
+    <!-- Results Section -->
+    {% if result %}
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+      
+      <!-- Top Header -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <div>
+          <span class="badge bg-danger rounded-pill px-3 py-1 mb-2 fs-6">🦠 Disease Detected</span>
+          <h3 class="fw-bold text-success mb-1">{{ result }}</h3>
+          <h5 class="text-secondary fw-normal mb-0">{{ title_hi }}</h5>
+        </div>
+        
+        <div class="text-end mt-2 mt-sm-0">
+          <span class="badge bg-success fs-5 px-3 py-2 rounded-pill">{{ confidence }}% Confidence</span>
+          <button id="ttsBtn" class="btn btn-outline-success btn-sm rounded-pill d-block mt-2 ms-auto">
+            🔊 Listen Diagnosis
+          </button>
+        </div>
+      </div>
 
-<input type="file" name="image" required onchange="previewImage(event)" style="margin-top:10px;">
+      <!-- Top 3 Predictions -->
+      <div class="mb-4 bg-light p-3 rounded-3">
+        <h6 class="fw-bold text-secondary mb-2">Model Confidence Breakdown</h6>
+        {% for r in results %}
+        <div class="mb-2">
+          <div class="d-flex justify-content-between small fw-semibold">
+            <span>{{ r.title_en }}</span>
+            <span>{{ r.confidence }}%</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ r.confidence }}%;" aria-valuenow="{{ r.confidence }}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
 
-<br><br>
+      <!-- Visual Leaf Segmentation Overlay Side-by-Side -->
+      {% if segmented_image %}
+      <div class="mb-4">
+        <h5 class="fw-bold text-success mb-3">🔍 Visual Leaf Contour Highlight</h5>
+        <div class="row text-center g-3">
+          <div class="col-6">
+            <div class="p-2 border rounded-3 bg-light">
+              <small class="d-block text-muted fw-semibold mb-2">Analyzed Leaf</small>
+              <img id="analyzedImg" src="#" style="display:none; max-height:220px;" class="img-fluid rounded-2">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 border rounded-3 bg-light">
+              <small class="d-block text-muted fw-semibold mb-2">Diseased Area Contour Overlay</small>
+              <img src="/media/{{ segmented_image }}" style="max-height:220px;" class="img-fluid rounded-2">
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
 
-<img id="preview" style="display:none; max-width:100%; border-radius:10px; margin-bottom:15px;">
+      <!-- Agricultural Treatment Guide Accordion -->
+      {% if details %}
+      <div class="accordion rounded-3 overflow-hidden shadow-sm" id="remedyAccordion">
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSymptoms">
+              📌 Symptoms & Disease Cause
+            </button>
+          </h2>
+          <div id="collapseSymptoms" class="accordion-collapse collapse show" data-bs-parent="#remedyAccordion">
+            <div class="accordion-body bg-white">
+              <p><strong>Causative Agent:</strong> {{ details.cause }}</p>
+              <p class="mb-0"><strong>Key Symptoms:</strong> {{ details.symptoms }}</p>
+            </div>
+          </div>
+        </div>
 
-<br>
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrganic">
+              🌱 Organic Treatment & Biological Control
+            </button>
+          </h2>
+          <div id="collapseOrganic" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
+            <div class="accordion-body bg-white">
+              <p class="mb-0">{{ details.organic_treatment }}</p>
+            </div>
+          </div>
+        </div>
 
-<button type="submit" style="background:#2e7d32; color:white; padding:10px 25px; border:none; border-radius:6px; cursor:pointer;">
-🔍 Detect Disease
-</button>
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChemical">
+              🧪 Recommended Chemical Spray
+            </button>
+          </h2>
+          <div id="collapseChemical" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
+            <div class="accordion-body bg-white">
+              <p class="mb-0">{{ details.chemical_treatment }}</p>
+            </div>
+          </div>
+        </div>
 
-</form>
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrevention">
+              🛡️ Long-term Field Prevention
+            </button>
+          </h2>
+          <div id="collapsePrevention" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
+            <div class="accordion-body bg-white">
+              <p class="mb-0">{{ details.prevention }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
 
-{% if result %}
+    </div>
+    {% endif %}
 
-<div style="margin-top:25px; padding:15px; background:#e8f5e9; border-radius:8px;">
-
-<h3>🦠 Disease Detected</h3>
-
-<p style="font-size:20px; color:#2e7d32; font-weight:bold;">
-{{ result }}
-</p>
-
-</div>
-
-{% if segmented_image %}
-
-<h3 style="margin-top:20px;">Segmented Leaf</h3>
-
-<img src="/media/{{ segmented_image }}" width="300" style="border-radius:10px;">
-
-{% endif %}
-
-{% endif %}
-
-{% if error %}
-
-<p style="color:red; margin-top:15px;">{{ error }}</p>
-
-{% endif %}
-
-</div>
-
-</div>
+  </div>
+</section>
 
 <script>
-
 function previewImage(event){
-
-var reader = new FileReader();
-
-reader.onload = function(){
-
-var img = document.getElementById("preview");
-img.src = reader.result;
-img.style.display = "block";
-
+  var reader = new FileReader();
+  reader.onload = function(){
+    var img = document.getElementById("preview");
+    img.src = reader.result;
+    img.style.display = "block";
+    var analyzedImg = document.getElementById("analyzedImg");
+    if(analyzedImg){
+      analyzedImg.src = reader.result;
+      analyzedImg.style.display = "inline-block";
+    }
+  }
+  if(event.target.files[0]){
+    reader.readAsDataURL(event.target.files[0]);
+  }
 }
 
-reader.readAsDataURL(event.target.files[0]);
-
-}
-
+document.addEventListener("DOMContentLoaded", function() {
+  const ttsBtn = document.getElementById("ttsBtn");
+  if(ttsBtn) {
+    ttsBtn.addEventListener("click", function() {
+      if('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const text = "{{ result }}. {{ title_hi }}. Organic treatment: {{ details.organic_treatment }}";
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-IN";
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Text to speech is not supported in your browser.");
+      }
+    });
+  }
+});
 </script>
-
 {% endblock %}
-
-

@@ -1,28 +1,49 @@
 :root {
-  --green: #198754;
+  --green: #1b4332;
+  --green-accent: #2d6a4f;
+  --light-green: #d8f3dc;
   --earth: #8d6e63;
-  --bg: #ffffff;
-  --text: #222222;
+  --bg: #f8f9fa;
+  --text: #212529;
   --card: #ffffff;
   --muted: #6c757d;
 }
 
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .navbar .nav-link {
-  color: #333;
+  color: #333333;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
-.navbar .nav-link:hover {
-  color: var(--green);
-}
-
-.card .h2, .card .display-6 {
-  line-height: 1;
-}
-
-footer .social-links a:hover {
-  color: var(--green) !important;
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--green-accent) !important;
 }
 
-/* Dark mode */
+/* Card hover animations */
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 15px rgba(27, 67, 50, 0.15) !important;
+}
+
+/* Max Width utilities */
+.max-w-700 {
+  max-width: 700px;
+}
+
+/* Dark mode styling */
 body.dark {
   --bg: #111418;
   --text: #e9ecef;
@@ -37,30 +58,71 @@ body.dark {
   background-color: var(--card) !important;
   color: var(--text);
 }
-.dark .text-muted { color: #adb5bd !important; }
-.dark .nav-link { color: var(--text) !important; }
-.stat .h2 { font-weight: 700; }
+.dark .bg-light {
+  background-color: #222830 !important;
+  color: var(--text) !important;
+}
+.dark .text-dark {
+  color: #e9ecef !important;
+}
+.dark .text-secondary {
+  color: #adb5bd !important;
+}
+.dark .text-muted {
+  color: #9ea7b0 !important;
+}
+.dark .nav-link {
+  color: var(--text) !important;
+}
+.dark .table {
+  color: var(--text) !important;
+  --bs-table-bg: var(--card);
+}
+.dark .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #20262c !important;
+  color: var(--text) !important;
+}
+.dark .form-control,
+.dark .form-select {
+  background-color: #222830 !important;
+  color: #ffffff !important;
+  border-color: #343a40 !important;
+}
+.dark .form-control::placeholder {
+  color: #8c96a0 !important;
+}
+.dark .border {
+  border-color: #2c3238 !important;
+}
 
-
-/* Hide Google top bar */
+/* Hide Google Translate top banner & unwanted text */
 .goog-te-banner-frame.skiptranslate {
-    display: none !important;
+  display: none !important;
 }
-
 body {
-    top: 0 !important;
+  top: 0 !important;
 }
-
-/* Hide Google branding text */
 .goog-te-gadget span {
-    display: none !important;
+  display: none !important;
 }
-
 .goog-logo-link {
-    display: none !important;
+  display: none !important;
 }
-
 .goog-te-gadget {
-    font-size: 0 !important;
+  font-size: 0 !important;
 }
 
+/* Mandi prices loading overlay */
+.mandi-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 0.5rem;
+}
+.dark .mandi-loading-overlay {
+  background: rgba(17, 20, 24, 0.85);
+}

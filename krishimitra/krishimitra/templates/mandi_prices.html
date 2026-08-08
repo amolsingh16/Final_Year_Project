@@ -1,43 +1,83 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <section class="py-5">
-  <div class="container">
-    <h2 class="fw-bold text-success mb-3">Mandi Prices</h2>
-    <form class="row g-2 align-items-end mb-4" method="get">
-      <div class="col-sm-6 col-md-4">
-        <label class="form-label">State</label>
-        <input type="text" class="form-control" name="state" value="{{ state }}" placeholder="e.g., Uttar Pradesh">
-      </div>
-      <div class="col-sm-3 col-md-2">
-        <label class="form-label">Limit</label>
-        <select class="form-select" name="limit">
-          {% for n in limit_options %}
-          <option value="{{ n }}" {% if limit == n %}selected{% endif %}>{{ n }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-sm-3 col-md-2">
-        <button class="btn btn-success w-100">Apply</button>
-      </div>
-    </form>
+  <div class="container position-relative">
+    
+    <div class="text-center mb-4">
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🛒 Wholesale Market Prices</span>
+      <h2 class="fw-bold text-success">Live Mandi Prices Across India</h2>
+      <p class="text-muted">Daily wholesale market rates from Agmarknet, Ministry of Agriculture & Farmers Welfare, Govt of India.</p>
+    </div>
 
-    {% if error_message %}
-      <div class="alert alert-danger">{{ error_message }}</div>
+    <!-- Search Form -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+      <form id="mandiSearchForm" class="row g-3 align-items-end" method="get">
+        <input type="hidden" name="search" value="1">
+
+        <div class="col-sm-6 col-md-5">
+          <label class="form-label fw-semibold" for="stateSelect">Select State</label>
+          <select class="form-select rounded-3" id="stateSelect" name="state" required>
+            {% for s in states %}
+              <option value="{{ s }}" {% if s == selected_state %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-sm-6 col-md-5">
+          <label class="form-label fw-semibold" for="commoditySelect">Select Commodity</label>
+          <select class="form-select rounded-3" id="commoditySelect" name="commodity">
+            <option value="">All Commodities</option>
+            {% for c in commodities %}
+              <option value="{{ c }}" {% if c == selected_commodity %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-sm-12 col-md-2">
+          <button type="submit" id="mandiSearchBtn" class="btn btn-success w-100 rounded-3 py-2 fw-semibold">
+            <span class="btn-text">🔍 Search Mandi</span>
+            <span class="btn-spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Notices & Fallback Banners -->
+    {% if is_fallback %}
+      <div class="alert alert-warning border-0 shadow-sm rounded-4 p-3 mb-4" role="alert">
+        <strong>⚠️ Offline / Fallback Data:</strong> Live Agmarknet government API is currently unreachable. Displaying cached mandi snapshot data. <em>Note: Prices may not reflect live today market rates.</em>
+      </div>
+    {% elif error_message %}
+      <div class="alert alert-danger rounded-4 shadow-sm" role="alert">{{ error_message }}</div>
+    {% elif info_message and not is_search %}
+      <div class="alert alert-info border-0 shadow-sm rounded-4" role="alert">ℹ️ {{ info_message }}</div>
     {% endif %}
 
-    <div class="table-responsive shadow-sm rounded">
-      <table class="table table-striped align-middle mb-0">
-        <thead class="table-light">
+    <!-- Loading Overlay -->
+    <div id="mandiLoadingOverlay" class="mandi-loading-overlay d-none" aria-live="polite" aria-busy="true">
+      <div class="text-center">
+        <div class="spinner-border text-success mb-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-muted mb-0 small fw-semibold">Fetching mandi prices from Agmarknet API…</p>
+      </div>
+    </div>
+
+    <!-- Price Data Table -->
+    <div class="table-responsive shadow-sm rounded-4 overflow-hidden border">
+      <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-success">
           <tr>
-            <th>Date</th>
+            <th>Arrival Date</th>
             <th>State</th>
             <th>District</th>
             <th>Market</th>
             <th>Commodity</th>
             <th>Variety</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th>Modal</th>
+            <th>Min Price</th>
+            <th>Max Price</th>
+            <th>Modal Price</th>
             <th>Unit</th>
           </tr>
         </thead>
@@ -45,26 +85,40 @@
           {% if records %}
             {% for r in records %}
               <tr>
-                <td>{{ r.arrival_date }}</td>
+                <td><small class="text-muted">{{ r.arrival_date }}</small></td>
                 <td>{{ r.state }}</td>
                 <td>{{ r.district }}</td>
-                <td>{{ r.market }}</td>
-                <td>{{ r.commodity }}</td>
+                <td class="fw-semibold">{{ r.market }}</td>
+                <td><span class="badge bg-light text-dark border">{{ r.commodity }}</span></td>
                 <td>{{ r.variety }}</td>
-                <td>{{ r.min_price }}</td>
-                <td>{{ r.max_price }}</td>
-                <td><strong>{{ r.modal_price }}</strong></td>
-                <td>{{ r.price_unit }}</td>
+                <td class="text-secondary">₹{{ r.min_price }}</td>
+                <td class="text-secondary">₹{{ r.max_price }}</td>
+                <td class="text-success fw-bold fs-6">₹{{ r.modal_price }}</td>
+                <td><small class="text-muted">{{ r.price_unit }}</small></td>
               </tr>
             {% endfor %}
+          {% elif is_search and not error_message %}
+            <tr>
+              <td colspan="10" class="text-center text-muted py-4">No mandi price records found for the selected filters.</td>
+            </tr>
           {% else %}
-            <tr><td colspan="10" class="text-center text-muted py-4">No data available.</td></tr>
+            <tr>
+              <td colspan="10" class="text-center text-muted py-4">Select state and commodity, then click Search to view price rates.</td>
+            </tr>
           {% endif %}
         </tbody>
       </table>
     </div>
 
-    <p class="small text-muted mt-2">Data source: data.gov.in</p>
+    {% if records %}
+      <p class="small text-muted mt-2 mb-0">Showing {{ records|length }} record{{ records|length|pluralize }} for {{ selected_state }}{% if selected_commodity %} — {{ selected_commodity }}{% endif %}.</p>
+    {% endif %}
+
+    <p class="small text-muted mt-3">
+      Data source: <a href="https://agmarknet.gov.in/" target="_blank" rel="noopener" class="text-muted">Agmarknet, Ministry of Agriculture &amp; Farmers Welfare, Government of India</a>
+    </p>
   </div>
 </section>
+
+<script src="{% static 'js/mandi_prices.js' %}"></script>
 {% endblock %}

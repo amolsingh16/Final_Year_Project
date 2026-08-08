@@ -130,7 +130,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# External APIs
-DATA_GOV_API_KEY = config('DATA_GOV_API_KEY', default='579b464db66ec23bdd0000014651d94165a24990603b3ec526c31a9a')
-DATA_GOV_MANDI_RESOURCE_ID = config('DATA_GOV_MANDI_RESOURCE_ID', default='9ef84268-d588-465a-a308-a864a43d0070')
-DATA_GOV_BASE_URL = config('DATA_GOV_BASE_URL', default='https://api.data.gov.in/resource')
+# Agmarknet mandi prices API (Ministry of Agriculture & Farmers Welfare)
+AGMARKNET_API_KEY = config('AGMARKNET_API_KEY', default='579b464db66ec23bdd0000014651d94165a24990603b3ec526c31a9a')
+AGMARKNET_RESOURCE_ID = config('AGMARKNET_RESOURCE_ID', default='9ef84268-d588-465a-a308-a864a43d0070')
+AGMARKNET_BASE_URL = config('AGMARKNET_BASE_URL', default='https://api.data.gov.in/resource')
+AGMARKNET_REQUEST_TIMEOUT = config('AGMARKNET_REQUEST_TIMEOUT', default=30, cast=int)
+AGMARKNET_DEFAULT_LIMIT = config('AGMARKNET_DEFAULT_LIMIT', default=50, cast=int)

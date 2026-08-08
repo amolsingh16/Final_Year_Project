@@ -2,69 +2,181 @@
 {% block content %}
 <section class="py-5">
   <div class="container">
-    <h2 class="fw-bold text-success mb-3" data-aos="fade-up">About</h2>
-    <p data-aos="fade-up" data-aos-delay="50"><strong>Team Name:</strong> Krishi Mitra</p>
-    <p data-aos="fade-up" data-aos-delay="100">
-      Krishi-Mitra is an AI-based farmer query support system designed to assist farmers with
-      actionable insights. The platform aims to provide disease detection, crop and fertilizer
-      recommendations, multilingual voice support, and key market/weather information. This will
-      help improve productivity, reduce losses, and make informed decisions.
-    </p>
-    <p data-aos="fade-up" data-aos-delay="150">
-      The initiative focuses on accessibility, simplicity, and regional language support so that
-      every farmer can benefit from modern technology.
-    </p>
-    <div class="row g-4 mt-2">
-      <div class="col-md-6" data-aos="fade-up">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Our Mission</h5>
-            <p class="card-text">Empower every farmer with timely, localized, and AI-assisted guidance for better outcomes.</p>
-          </div>
-        </div>
+    
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="fw-bold text-success">About Krishi Mitra</h2>
+      <p class="text-muted">AI-Based Farmer Query Support & Decision Assistance System</p>
+    </div>
+
+    <div class="row g-4 mb-5 align-items-center">
+      <div class="col-lg-6" data-aos="fade-up">
+        <h4 class="fw-bold text-success mb-3">Project Overview</h4>
+        <p class="text-secondary">
+          <strong>Krishi Mitra</strong> is an integrated artificial intelligence platform designed to address critical challenges in Indian agriculture. By combining Convolutional Neural Networks (CNN) for leaf disease diagnosis, real-time government market price APIs, live meteorological advisories, and soil NPK fertilizer calculators, Krishi Mitra provides actionable, localized support directly to farmers.
+        </p>
+        <p class="text-secondary">
+          The primary objective is accessibility—ensuring that complex AI models and agricultural data are presented through simple, multilingual, and voice-assisted web interfaces suitable for rural users.
+        </p>
       </div>
-      <div class="col-md-6" data-aos="fade-up" data-aos-delay="50">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Our Vision</h5>
-            <p class="card-text">Build a trusted digital companion for Indian agriculture with inclusive technology.</p>
-          </div>
+
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-light">
+          <h5 class="fw-bold text-success mb-3">🛠️ Technology Stack</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><strong>Backend Framework:</strong> Django 5.2 (Python)</li>
+            <li class="mb-2"><strong>Machine Learning:</strong> TensorFlow 2.21, Keras, OpenCV, NumPy</li>
+            <li class="mb-2"><strong>Database:</strong> SQLite 3 (ORM with Django Models)</li>
+            <li class="mb-2"><strong>External APIs:</strong> Agmarknet API (GOI OGD), Open-Meteo Weather API</li>
+            <li class="mb-2"><strong>Frontend & UX:</strong> HTML5, CSS3, JavaScript, Bootstrap 5.3, AOS Animations</li>
+            <li><strong>Voice Synthesis & STT:</strong> Web Speech API (SpeechRecognition & SpeechSynthesis)</li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <h4 class="fw-bold mt-5 mb-3 text-success" data-aos="fade-up">Team</h4>
-    <div class="row g-4">
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card h-100 shadow-sm text-center">
-          <div class="card-body">
-            <div class="display-6">👩‍💻</div>
-            <h6 class="mt-2">AI Engineer</h6>
-            <small class="text-muted">Modeling & Recommendations</small>
-          </div>
+    <!-- Mission & Vision -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-6" data-aos="fade-up">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-success text-white">
+          <h5 class="fw-bold mb-2">🎯 Our Mission</h5>
+          <p class="mb-0 text-white-50">Empower Indian farmers with accessible, timely, and scientific agricultural guidance to reduce crop loss, optimize fertilizer usage, and maximize crop yields.</p>
         </div>
       </div>
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
-        <div class="card h-100 shadow-sm text-center">
-          <div class="card-body">
-            <div class="display-6">🗣️</div>
-            <h6 class="mt-2">Voice Experience</h6>
-            <small class="text-muted">Multilingual UX</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 shadow-sm text-center">
-          <div class="card-body">
-            <div class="display-6">🌾</div>
-            <h6 class="mt-2">Agri Advisor</h6>
-            <small class="text-muted">Domain Expertise</small>
-          </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-dark text-white">
+          <h5 class="fw-bold mb-2">👁️ Our Vision</h5>
+          <p class="mb-0 text-white-50">To bridge the technological gap between modern AI advancements and rural agricultural practices through intuitive, multi-modal digital solutions.</p>
         </div>
       </div>
     </div>
+
   </div>
 </section>
+
+
+<!-- Project Team -->
+<div class="mb-5" data-aos="fade-up">
+  <div class="text-center mb-4">
+    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">
+      👨‍💻 Project Team
+    </span>
+    <h4 class="fw-bold text-success">Meet the Team</h4>
+    <p class="text-muted mb-0">
+      Developed as a B.Tech Final Year Project
+    </p>
+  </div>
+
+  <div class="row g-4 justify-content-center">
+
+    <!-- Team Member 1 -->
+    <div class="col-md-6 col-lg-4" data-aos="fade-up">
+      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+        <div class="rounded-circle bg-success-subtle text-success
+                    d-flex align-items-center justify-content-center mx-auto mb-3"
+          style="width: 80px; height: 80px; font-size: 32px;">
+          👨‍💻
+        </div>
+
+        <h5 class="fw-bold mb-1">Amol Singh</h5>
+        <p class="text-success fw-semibold mb-2">
+          B.Tech – Computer Science & Engineering
+        </p>
+        <p class="text-muted small mb-0">
+          Developer & Project Team Member
+        </p>
+      </div>
+    </div>
+
+    <!-- Team Member 2 -->
+    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+        <div class="rounded-circle bg-success-subtle text-success
+                    d-flex align-items-center justify-content-center mx-auto mb-3"
+          style="width: 80px; height: 80px; font-size: 32px;">
+          👨‍💻
+        </div>
+
+        <h5 class="fw-bold mb-1">Ashish Kumar</h5>
+        <p class="text-success fw-semibold mb-2">
+          B.Tech – Computer Science & Engineering
+        </p>
+        <p class="text-muted small mb-0">
+          Project Team Member
+        </p>
+      </div>
+    </div>
+
+    <!-- Team Member 3 -->
+    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+        <div class="rounded-circle bg-success-subtle text-success
+                    d-flex align-items-center justify-content-center mx-auto mb-3"
+          style="width: 80px; height: 80px; font-size: 32px;">
+          👨‍💻
+        </div>
+
+        <h5 class="fw-bold mb-1">Amit Kumar</h5>
+        <p class="text-success fw-semibold mb-2">
+          B.Tech – Computer Science & Engineering
+        </p>
+        <p class="text-muted small mb-0">
+          Project Team Member
+        </p>
+      </div>
+    </div>
+
+    <!-- Team Member 4 -->
+    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+        <div class="rounded-circle bg-success-subtle text-success
+                        d-flex align-items-center justify-content-center mx-auto mb-3"
+          style="width: 80px; height: 80px; font-size: 32px;">
+          👨‍💻
+        </div>
+    
+        <h5 class="fw-bold mb-1">Shyam Babu</h5>
+        <p class="text-success fw-semibold mb-2">
+          B.Tech – CSE - AIML
+        </p>
+        <p class="text-muted small mb-0">
+          Project Team Member
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Project Guidance -->
+<div class="row g-4 mb-5">
+  <div class="col-md-6" data-aos="fade-up">
+    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+      <h5 class="fw-bold text-success mb-3">🎓 Project Guidance</h5>
+
+      <p class="mb-1">
+        <strong>Under the Guidance of</strong>
+      </p>
+
+      <p class="text-muted mb-0">
+        Dr. Mohd. Osama
+      </p>
+    </div>
+  </div>
+
+  <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+      <h5 class="fw-bold text-success mb-3">🏫 Department</h5>
+
+      <p class="mb-1">
+        <strong>Computer Science & Engineering</strong>
+      </p>
+
+      <p class="text-muted mb-0">
+        United Institute Of Technology
+      </p>
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}
-
-

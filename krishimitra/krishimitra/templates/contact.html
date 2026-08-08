@@ -2,40 +2,126 @@
 {% block content %}
 <section class="py-5">
   <div class="container">
-    <h2 class="fw-bold text-success mb-4" data-aos="fade-up">Contact Us</h2>
+    
+    <div class="text-center mb-5">
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">📞 Farmer Support & Advisory</span>
+      <h2 class="fw-bold text-success">Contact Krishi Mitra Team</h2>
+      <p class="text-muted">Have a query regarding crop disease, soil health, or mandi prices? Send us a message or contact our helpline.</p>
+    </div>
+
+    <!-- Django Alert Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <div class="row g-4">
-      <div class="col-lg-7" data-aos="fade-up" data-aos-delay="50">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" placeholder="Your Name" disabled>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" placeholder="you@example.com" disabled>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Message</label>
-            <textarea class="form-control" rows="5" placeholder="Your message" disabled></textarea>
-          </div>
-          <button class="btn btn-success" disabled>Send Message</button>
-        </form>
+      <!-- Contact Form -->
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+          <h4 class="fw-bold text-success mb-3">Send a Farmer Query</h4>
+          
+          <form method="POST" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="name">Your Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control rounded-3" id="name" name="name" placeholder="e.g. Ramesh Kumar" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="phone">Phone / Mobile No.</label>
+                <input type="tel" class="form-control rounded-3" id="phone" name="phone" placeholder="+91 98765 43210">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="email">Email Address</label>
+                <input type="email" class="form-control rounded-3" id="email" name="email" placeholder="you@example.com">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="subject">Query Subject</label>
+                <select class="form-select rounded-3" id="subject" name="subject">
+                  <option value="Disease Help">Plant Disease Advisory</option>
+                  <option value="Soil & Fertilizer">Soil & Fertilizer Guidance</option>
+                  <option value="Mandi Prices">Mandi Price Query</option>
+                  <option value="Government Schemes">Government Scheme Eligibility</option>
+                  <option value="Other">General Feedback</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="message">Detailed Query <span class="text-danger">*</span></label>
+                <textarea class="form-control rounded-3" id="message" name="message" rows="4" placeholder="Describe your crop condition or query in detail..." required></textarea>
+              </div>
+
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
+                  📩 Submit Query
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h6 class="fw-bold">Reach us</h6>
-            <p class="mb-1">Email: support@krishiyoddha.example</p>
-            <p class="mb-3">Phone: +91 90000 00000</p>
-            <div class="ratio ratio-16x9 rounded overflow-hidden bg-light">
-              <div class="d-flex align-items-center justify-content-center text-muted">Map Placeholder</div>
+
+      <!-- Support Details Card -->
+      <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-success text-white mb-4">
+          <h5 class="fw-bold mb-3">📞 Emergency Farmer Helpline</h5>
+          <p class="small mb-3 text-white-50">Free government toll-free helpline service available 6 AM to 10 PM daily in all local languages.</p>
+          
+          <div class="p-3 bg-white text-dark rounded-3 shadow-sm mb-3 text-center">
+            <small class="text-muted d-block fw-semibold">Kisan Call Center (Toll Free)</small>
+            <span class="fs-4 fw-bold text-success">1800-180-1551</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <span class="fs-5">📧</span>
+            <div>
+              <small class="text-white-50 d-block">Project Support Email</small>
+              <span class="fw-semibold">support@krishimitra.org</span>
             </div>
           </div>
         </div>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+          <h6 class="fw-bold text-success mb-3">❓ Frequently Asked Questions</h6>
+          <div class="accordion accordion-flush" id="faqAccordion">
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed px-0 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  How does disease detection work?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body px-0 text-muted small">
+                  Upload a photo of your infected leaf. Our trained Deep Learning Convolutional Neural Network (CNN) analyzes the symptoms and provides tailored treatment guides.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed px-0 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Are Mandi prices live?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body px-0 text-muted small">
+                  Yes, prices are fetched directly from the official Agmarknet API (Ministry of Agriculture & Farmers Welfare, Govt of India).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 {% endblock %}
-
-

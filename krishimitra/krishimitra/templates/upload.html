@@ -103,6 +103,27 @@
       </div>
       {% endif %}
 
+      <!-- Supervised U-Net Leaf Segmentation & Lesion Extraction Panel -->
+      {% if unet_leaf_mask %}
+      <div class="mb-4 p-3 bg-light rounded-3 border">
+        <h6 class="fw-bold text-success mb-3">🧠 Supervised U-Net Leaf Segmentation & Lesion Extraction</h6>
+        <div class="row text-center g-2">
+          <div class="col-4">
+            <small class="d-block text-muted fw-semibold mb-1">U-Net Leaf Mask</small>
+            <img src="/media/{{ unet_leaf_mask }}" style="max-height:160px;" class="img-fluid rounded border">
+          </div>
+          <div class="col-4">
+            <small class="d-block text-muted fw-semibold mb-1">Black Background</small>
+            <img src="/media/{{ unet_black_bg }}" style="max-height:160px;" class="img-fluid rounded border">
+          </div>
+          <div class="col-4">
+            <small class="d-block text-muted fw-semibold mb-1">Disease Lesion Mask</small>
+            <img src="/media/{{ unet_disease_mask }}" style="max-height:160px;" class="img-fluid rounded border">
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
       <!-- Agricultural Treatment Guide Accordion -->
       {% if details %}
       <div class="accordion rounded-3 overflow-hidden shadow-sm" id="remedyAccordion">

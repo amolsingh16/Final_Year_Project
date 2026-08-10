@@ -1,8 +1,16 @@
 venv/
 dataset/
+
 __pycache__/
 *.pyc
+
 db.sqlite3
 .vscode/
+
 *.h5
+
 media/
+
+segmentation_dataset/
+segmentation_results/
+training_history.png

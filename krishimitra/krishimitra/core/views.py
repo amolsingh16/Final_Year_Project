@@ -3,6 +3,7 @@ from django.contrib import messages
 from core.constants.indian_states import INDIAN_STATES
 from core.services.mandi_service import MandiPriceService
 from core.services.disease_service import process_image_and_predict
+from core.services.segmentation_service import process_leaf_segmentation
 from core.services.crop_service import recommend_crops, calculate_fertilizers
 from core.services.weather_service import fetch_weather_for_city, WeatherServiceError
 from core.models import DiseaseDetectionLog, ContactMessage, CropAdvisoryLog
@@ -97,6 +98,7 @@ def detect_disease(request):
     Plant leaf disease detection view.
     Preprocesses clean RGB images for TensorFlow model prediction,
     generates leaf contour overlay for visual feedback,
+    runs optional U-Net leaf segmentation pipeline,
     and logs query to database.
     """
     context = {
@@ -105,7 +107,10 @@ def detect_disease(request):
         "confidence": None,
         "results": [],
         "segmented_image": None,
-        "details": None
+        "details": None,
+        "unet_leaf_mask": None,
+        "unet_black_bg": None,
+        "unet_disease_mask": None
     }
 
     if request.method == "POST":
@@ -114,7 +119,7 @@ def detect_disease(request):
         else:
             uploaded_file = request.FILES["image"]
             try:
-                # Call disease prediction service
+                # 1. Existing disease classification prediction
                 res = process_image_and_predict(uploaded_file)
                 
                 context["result"] = res["details"]["title_en"]
@@ -123,6 +128,15 @@ def detect_disease(request):
                 context["results"] = res["top_3"]
                 context["segmented_image"] = res["segmented_url"]
                 context["details"] = res["details"]
+
+                # 2. Independent Supervised U-Net Leaf Segmentation Pipeline
+                try:
+                    seg_res = process_leaf_segmentation(uploaded_file)
+                    context["unet_leaf_mask"] = seg_res.get("leaf_mask_url")
+                    context["unet_black_bg"] = seg_res.get("black_bg_url")
+                    context["unet_disease_mask"] = seg_res.get("disease_mask_url")
+                except Exception:
+                    pass
 
                 # Log detection to database
                 DiseaseDetectionLog.objects.create(

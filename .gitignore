@@ -14,3 +14,7 @@ media/
 segmentation_dataset/
 segmentation_results/
 training_history.png
+.venv/
+**/.venv/
+.DS_Store
+**/.DS_Store

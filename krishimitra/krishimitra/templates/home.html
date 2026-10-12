@@ -1,94 +1,245 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- Hero Section -->
-<section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh; background: linear-gradient(135deg, rgba(27,67,50,0.85), rgba(45,106,79,0.85)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
-  <div class="container text-center text-white my-4">
-    <span class="badge bg-white text-success fs-6 px-3 py-2 rounded-pill fw-semibold mb-3 shadow-sm" data-aos="fade-down">🌿 AI-Powered Digital Kisan Companion</span>
-    <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-up">Krishi Mitra</h1>
-    <p class="lead text-white-50 max-w-700 mx-auto mb-4" data-aos="fade-up" data-aos-delay="100">
-      Smart AI Query Support System empowering Indian farmers with instant plant disease detection, soil NPK fertilizer recommendations, live Mandi prices, and localized weather advisories.
-    </p>
-    
-    <div class="d-flex flex-wrap justify-content-center gap-3" data-aos="fade-up" data-aos-delay="200">
-      <a href="{% url 'detect' %}" class="btn btn-success btn-lg rounded-pill px-4 shadow-sm fw-semibold">
-        📷 Scan Leaf Disease
-      </a>
-      <a href="{% url 'mandi_prices' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 shadow-sm fw-semibold">
-        🛒 Mandi Prices
-      </a>
-      <a href="{% url 'crop_recommendation' %}" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm fw-semibold text-dark">
-        🌱 Soil Advisory
-      </a>
+<section class="position-relative overflow-hidden py-5" style="background: linear-gradient(125deg, rgba(9, 38, 23, 0.92) 0%, rgba(21, 97, 59, 0.88) 55%, rgba(22, 101, 52, 0.84) 100%), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
+  <div class="container py-lg-4">
+    <div class="row align-items-center g-5">
+      <!-- Left Hero Content -->
+      <div class="col-lg-7 text-white" data-aos="fade-right">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill mb-3 shadow-sm" style="background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25);">
+          <span class="km-live-dot"></span>
+          <span class="small fw-semibold text-warning">🌾 भारत का स्मार्ट डिजिटल किसान साथी • AI Kisan Portal</span>
+        </div>
+
+        <h1 class="display-4 fw-bold text-white mb-3 lh-sm">
+          Smart Farming &amp; AI Crop Care with <span class="text-warning">Krishi Mitra</span>
+        </h1>
+
+        <p class="lead text-white-50 mb-4" style="max-width: 620px;">
+          पत्ती की फोटो से बीमारी की पहचान, पूरे भारत की लाइव मंडी रेट्स (Agmarknet 2.0), आपके जिले का सटीक मौसम और हिंदी/अंग्रेज़ी वॉइस असिस्टेंट — सब कुछ एक ही जगह।
+        </p>
+
+        <!-- Primary Action Buttons -->
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          <a href="{% url 'detect' %}" class="btn btn-warning btn-lg rounded-pill px-4 py-3 fw-bold text-dark shadow">
+            📷 पत्ती स्कैन करें (Scan Disease)
+          </a>
+          <a href="{% url 'voice_assistant' %}" class="btn btn-success btn-lg rounded-pill px-4 py-3 fw-semibold shadow border border-light border-opacity-25">
+            🎙️ बोलकर पूछें (Voice AI)
+          </a>
+          <a href="{% url 'mandi_prices' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold">
+            🛒 मंडी भाव (Mandi Rates)
+          </a>
+        </div>
+
+        <!-- Instant City Weather Quick Check Bar -->
+        <div class="p-2 rounded-4" style="max-width: 540px; background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+          <form action="{% url 'weather' %}" method="get" class="d-flex gap-2">
+            <input type="text" name="city" class="form-control border-0 rounded-pill px-3 bg-white text-dark" placeholder="🌤️ अपने शहर/जिले का मौसम देखें (जैसे: Gorakhpur, Lucknow, Patna)..." required>
+            <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold text-dark text-nowrap">मौसम देखें →</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Hero Interactive Quick-Access Grid -->
+      <div class="col-lg-5" data-aos="fade-left" data-aos-delay="100">
+        <div class="row g-3">
+          <div class="col-6">
+            <a href="{% url 'detect' %}" class="text-decoration-none">
+              <div class="p-4 rounded-4 h-100 text-white hover-lift" style="background: rgba(255, 255, 255, 0.13); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.22);">
+                <div class="fs-1 mb-2">🩺</div>
+                <span class="badge bg-warning text-dark rounded-pill mb-2">CNN + U-Net AI</span>
+                <h5 class="fw-bold mb-1">रोग पहचान</h5>
+                <p class="small text-white-50 mb-0">पत्ती की फोटो अपलोड करें और तुरंत दवा जानें</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-6">
+            <a href="{% url 'mandi_prices' %}" class="text-decoration-none">
+              <div class="p-4 rounded-4 h-100 text-white hover-lift" style="background: rgba(255, 255, 255, 0.13); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.22);">
+                <div class="fs-1 mb-2">🛒</div>
+                <span class="badge bg-success border border-light border-opacity-50 rounded-pill mb-2">Agmarknet Live</span>
+                <h5 class="fw-bold mb-1">मंडी भाव</h5>
+                <p class="small text-white-50 mb-0">सभी 36 राज्यों की मंडियों के ताज़ा थोक रेट</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-6">
+            <a href="{% url 'weather' %}" class="text-decoration-none">
+              <div class="p-4 rounded-4 h-100 text-white hover-lift" style="background: rgba(255, 255, 255, 0.13); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.22);">
+                <div class="fs-1 mb-2">⛅</div>
+                <span class="badge bg-info text-dark rounded-pill mb-2">7-Day Forecast</span>
+                <h5 class="fw-bold mb-1">मौसम और सलाह</h5>
+                <p class="small text-white-50 mb-0">बारिश, तापमान और छिड़काव का सही समय</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-6">
+            <a href="{% url 'crop_recommendation' %}" class="text-decoration-none">
+              <div class="p-4 rounded-4 h-100 text-white hover-lift" style="background: rgba(255, 255, 255, 0.13); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.22);">
+                <div class="fs-1 mb-2">🌱</div>
+                <span class="badge bg-light text-success rounded-pill mb-2">ICAR Formula</span>
+                <h5 class="fw-bold mb-1">मिट्टी और खाद</h5>
+                <p class="small text-white-50 mb-0">NPK से सही फसल और यूरिया/DAP की बोरी जानें</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Stats Bar -->
+<!-- Impact Stats Bar -->
 <section class="py-4 bg-white border-bottom shadow-sm">
   <div class="container">
     <div class="row text-center g-3">
       <div class="col-6 col-md-3" data-aos="fade-up">
-        <div class="stat p-2">
-          <div class="h2 fw-bold text-success mb-0" data-counter="15000">0</div>
-          <div class="small text-muted fw-semibold">Farmers Supported</div>
+        <div class="p-2">
+          <div class="h2 fw-bold text-success mb-0"><span data-counter="15000">15000</span>+</div>
+          <div class="small text-muted fw-semibold">👨‍🌾 Farmers Supported</div>
         </div>
       </div>
       <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
-        <div class="stat p-2">
-          <div class="h2 fw-bold text-success mb-0" data-counter="98">0</div>
-          <div class="small text-muted fw-semibold">% Accuracy Benchmark</div>
+        <div class="p-2">
+          <div class="h2 fw-bold text-success mb-0"><span data-counter="98">98</span>%</div>
+          <div class="small text-muted fw-semibold">🎯 CNN Model Accuracy</div>
         </div>
       </div>
       <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
-        <div class="stat p-2">
-          <div class="h2 fw-bold text-success mb-0" data-counter="28">0</div>
-          <div class="small text-muted fw-semibold">States & Mandis</div>
+        <div class="p-2">
+          <div class="h2 fw-bold text-success mb-0"><span data-counter="36">36</span></div>
+          <div class="small text-muted fw-semibold">🗺️ States &amp; UTs Live Mandis</div>
         </div>
       </div>
       <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="150">
-        <div class="stat p-2">
-          <div class="h2 fw-bold text-success mb-0" data-counter="8">0</div>
-          <div class="small text-muted fw-semibold">Languages Supported</div>
+        <div class="p-2">
+          <div class="h2 fw-bold text-success mb-0">24×7</div>
+          <div class="small text-muted fw-semibold">🗣️ Hindi &amp; English Voice AI</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Core Features Overview -->
-<section class="py-5 bg-light">
+<!-- Complete 6-Module Smart Farming Toolkit -->
+<section class="py-5">
   <div class="container">
     <div class="text-center mb-5" data-aos="fade-up">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">💡 Core Capabilities</span>
-      <h2 class="fw-bold text-success">Comprehensive Smart Farming Toolkit</h2>
-      <p class="text-muted">Built specifically for Indian agricultural conditions, soil profiles, and regional crops.</p>
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">💡 Complete Kisan Suite</span>
+      <h2 class="fw-bold text-success">All-in-One Smart Farming Toolkit</h2>
+      <p class="text-muted max-w-700 mx-auto">किसानों की हर ज़रूरत के लिए AI और सरकारी डेटा से जुड़ा आसान डिजिटल प्लेटफॉर्म।</p>
     </div>
 
     <div class="row g-4">
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-          <div class="display-5 text-success mb-3">🩺</div>
-          <h5 class="fw-bold">AI Disease Diagnosis</h5>
-          <p class="text-muted small">Upload plant leaf photos for deep learning disease identification, top-3 confidence scores, and organic/chemical remedies.</p>
-          <a href="{% url 'detect' %}" class="text-success fw-semibold text-decoration-none mt-auto">Open Scanner →</a>
+      <!-- 1. Disease Detection -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">🩺</div>
+            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">Deep Learning CNN</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">AI Plant Disease Detection</h5>
+          <p class="small text-success fw-semibold mb-2">पत्ती की फोटो से रोग और इलाज की पहचान</p>
+          <p class="text-muted small mb-4">
+            Upload any crop leaf photo for instant disease identification, confidence scores, U-Net lesion segmentation, and organic/chemical treatment doses.
+          </p>
+          <a href="{% url 'detect' %}" class="btn btn-success rounded-pill w-100 mt-auto fw-semibold">
+            📷 Open Disease Scanner →
+          </a>
         </div>
       </div>
 
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-          <div class="display-5 text-success mb-3">🌾</div>
-          <h5 class="fw-bold">Soil NPK & Fertilizer Calculator</h5>
-          <p class="text-muted small">Input soil test parameters to receive optimal crop suitability rankings and exact Urea/DAP/MOP bag calculations.</p>
-          <a href="{% url 'crop_recommendation' %}" class="text-success fw-semibold text-decoration-none mt-auto">Calculate Dose →</a>
+      <!-- 2. Soil & Fertilizer -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="50">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">🌱</div>
+            <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-3 py-1">ICAR NPK Engine</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Soil &amp; Fertilizer Calculator</h5>
+          <p class="small text-success fw-semibold mb-2">मिट्टी परीक्षण और खाद (Urea/DAP/MOP) की गणना</p>
+          <p class="text-muted small mb-4">
+            Select a 1-click regional soil preset or enter N, P, K &amp; pH values to get top crop recommendations and exact 50kg fertilizer bag counts.
+          </p>
+          <a href="{% url 'crop_recommendation' %}" class="btn btn-outline-success rounded-pill w-100 mt-auto fw-semibold">
+            🌾 Calculate Fertilizer Dose →
+          </a>
         </div>
       </div>
 
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-          <div class="display-5 text-success mb-3">🛒</div>
-          <h5 class="fw-bold">Live Agmarknet Mandi Prices</h5>
-          <p class="text-muted small">Fetch daily wholesale mandi market rates across Indian districts with commodity filtering and offline fallback resilience.</p>
-          <a href="{% url 'mandi_prices' %}" class="text-success fw-semibold text-decoration-none mt-auto">Check Rates →</a>
+      <!-- 3. Live Mandi Prices -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">🛒</div>
+            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1">Agmarknet 2.0 API</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Live Agmarknet Mandi Prices</h5>
+          <p class="small text-success fw-semibold mb-2">देशभर की मंडियों के ताज़ा थोक भाव</p>
+          <p class="text-muted small mb-4">
+            Check real-time wholesale crop prices across all 36 Indian States &amp; UTs with instant district search, min/max/modal rates, and summary stats.
+          </p>
+          <a href="{% url 'mandi_prices' %}" class="btn btn-outline-success rounded-pill w-100 mt-auto fw-semibold">
+            📊 Check Live Mandi Rates →
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Weather Advisory -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">☁️</div>
+            <span class="badge bg-info-subtle text-info-emphasis rounded-pill px-3 py-1">Open-Meteo Live</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">District Weather &amp; Ag-Forecast</h5>
+          <p class="small text-success fw-semibold mb-2">जिलेवार मौसम, बारिश और छिड़काव सलाह</p>
+          <p class="text-muted small mb-4">
+            Search any Indian district or city in Hindi or English for live temperature, humidity, wind speed, 7-day rain probability, and spraying advice.
+          </p>
+          <a href="{% url 'weather' %}" class="btn btn-outline-success rounded-pill w-100 mt-auto fw-semibold">
+            ⛅ Check District Weather →
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. Multilingual Voice Assistant -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">🎙️</div>
+            <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1">Hindi + English Voice</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Smart Kisan Voice Assistant</h5>
+          <p class="small text-success fw-semibold mb-2">बोलकर या लिखकर किसी भी सवाल का जवाब पाएं</p>
+          <p class="text-muted small mb-4">
+            Ask anything about weather, mandi prices, fertilizer calculation, crop diseases, or government schemes using your microphone with spoken audio replies.
+          </p>
+          <a href="{% url 'voice_assistant' %}" class="btn btn-warning text-dark rounded-pill w-100 mt-auto fw-bold">
+            🗣️ Talk to Voice AI →
+          </a>
+        </div>
+      </div>
+
+      <!-- 6. Government Schemes -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="250">
+        <div class="card km-card h-100 p-4 hover-lift">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="km-icon-box">🏛️</div>
+            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1">Direct Portals</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Govt Agriculture Schemes</h5>
+          <p class="small text-success fw-semibold mb-2">पीएम-किसान, फसल बीमा और सब्सिडी योजनाएं</p>
+          <p class="text-muted small mb-4">
+            Explore eligibility, documents required, and direct official links for PM-KISAN, PMFBY Crop Insurance, Kisan Credit Card (KCC), and Solar Pumps.
+          </p>
+          <a href="{% url 'schemes' %}" class="btn btn-outline-success rounded-pill w-100 mt-auto fw-semibold">
+            🏛️ Explore Govt Schemes →
+          </a>
         </div>
       </div>
     </div>
@@ -96,35 +247,36 @@
 </section>
 
 <!-- How It Works -->
-<section class="py-5">
+<section class="py-5 bg-white border-top border-bottom">
   <div class="container">
     <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">⚡ Simple 3-Step Workflow</span>
       <h3 class="fw-bold text-success mb-2">How Krishi Mitra Works</h3>
-      <p class="text-muted">3 simple steps to get instant agricultural solutions.</p>
+      <p class="text-muted">सिर्फ 3 आसान स्टेप्स में अपनी खेती से जुड़ी समस्या का वैज्ञानिक समाधान पाएं।</p>
     </div>
 
     <div class="row g-4 text-center">
       <div class="col-md-4" data-aos="fade-up">
-        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
-          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">1</div>
-          <h5 class="fw-bold">Ask, Speak, or Upload</h5>
-          <p class="text-muted small">Upload a leaf photo, enter soil test NPK values, or ask a query in Hindi/English using voice input.</p>
+        <div class="card km-card p-4 h-100">
+          <div class="badge bg-success rounded-circle d-inline-flex align-items-center justify-content-center fs-4 mx-auto mb-3 shadow" style="width: 64px; height: 64px;">1</div>
+          <h5 class="fw-bold">फोटो अपलोड करें या बोलकर पूछें</h5>
+          <p class="text-muted small mb-0">पत्ती की फोटो अपलोड करें, मिट्टी के NPK नंबर चुनें, या माइक दबाकर हिंदी/अंग्रेज़ी में अपना सवाल बोलें।</p>
         </div>
       </div>
 
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
-          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">2</div>
-          <h5 class="fw-bold">AI & API Processing</h5>
-          <p class="text-muted small">CNN model analyzes crop health while real-time Agmarknet & Open-Meteo APIs fetch market & weather metrics.</p>
+        <div class="card km-card p-4 h-100">
+          <div class="badge bg-success rounded-circle d-inline-flex align-items-center justify-content-center fs-4 mx-auto mb-3 shadow" style="width: 64px; height: 64px;">2</div>
+          <h5 class="fw-bold">AI मॉडल एवं लाइव API विश्लेषण</h5>
+          <p class="text-muted small mb-0">हमारा TensorFlow CNN मॉडल पत्ती की जांच करता है और Agmarknet व Open-Meteo से लाइव डेटा लाता है।</p>
         </div>
       </div>
 
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="p-4 rounded-4 bg-white shadow-sm border h-100">
-          <div class="badge bg-success rounded-circle p-3 fs-4 mb-3" style="width: 60px; height: 60px;">3</div>
-          <h5 class="fw-bold">Actionable Solutions</h5>
-          <p class="text-muted small">Receive organic treatments, chemical doses, spraying schedules, and government scheme guidance.</p>
+        <div class="card km-card p-4 h-100">
+          <div class="badge bg-success rounded-circle d-inline-flex align-items-center justify-content-center fs-4 mx-auto mb-3 shadow" style="width: 64px; height: 64px;">3</div>
+          <h5 class="fw-bold">तुरंत सटीक सलाह और समाधान</h5>
+          <p class="text-muted small mb-0">जैविक व रासायनिक दवा की मात्रा, खाद की बोरी, मंडी के भाव और मौसम के अनुसार छिड़काव की सलाह पाएं।</p>
         </div>
       </div>
     </div>
@@ -132,32 +284,54 @@
 </section>
 
 <!-- Farmer Reviews -->
-<section class="py-5 bg-light">
+<section class="py-5">
   <div class="container">
     <div class="text-center mb-4" data-aos="fade-up">
-      <h3 class="fw-bold text-success mb-2">What Farmers Say</h3>
-      <p class="text-muted">Feedback from agricultural users across India.</p>
+      <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-2 rounded-pill fw-semibold mb-2">⭐ किसान भाइयों के अनुभव</span>
+      <h3 class="fw-bold text-success mb-2">Trusted by Farmers Across India</h3>
+      <p class="text-muted">Feedback from agricultural users across Indian states.</p>
     </div>
 
     <div class="row g-4">
       <div class="col-md-4" data-aos="fade-up">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-          <p class="mb-3 text-secondary">“The tomato leaf disease scanner identified early blight in my crop immediately. The organic treatment saved my yield this season.”</p>
-          <div class="fw-bold text-success">— Ramesh Kumar, Uttar Pradesh</div>
+        <div class="card km-card p-4 h-100">
+          <div class="text-warning mb-2">★★★★★</div>
+          <p class="mb-3 text-secondary">“टमाटर की पत्ती स्कैन करते ही अर्ली ब्लाइट बीमारी का पता चल गया और जैविक व रासायनिक दोनों दवाओं की सही मात्रा मिल गई।”</p>
+          <div class="mt-auto d-flex align-items-center gap-2">
+            <span class="fs-4">👨‍🌾</span>
+            <div>
+              <div class="fw-bold text-success">Ramesh Kumar</div>
+              <small class="text-muted">Gorakhpur, Uttar Pradesh</small>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-          <p class="mb-3 text-secondary">“Checking daily Mandi prices before selling my produce helped me get a much better price in the local market.”</p>
-          <div class="fw-bold text-success">— Harish Patel, Gujarat</div>
+        <div class="card km-card p-4 h-100">
+          <div class="text-warning mb-2">★★★★★</div>
+          <p class="mb-3 text-secondary">“फसल बेचने से पहले मंडी भाव चेक करने से मुझे अपने जिले और आस-पास की मंडियों के ताज़ा रेट तुरंत पता चल जाते हैं।”</p>
+          <div class="mt-auto d-flex align-items-center gap-2">
+            <span class="fs-4">👳‍♂️</span>
+            <div>
+              <div class="fw-bold text-success">Harish Patel</div>
+              <small class="text-muted">Rajkot, Gujarat</small>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-          <p class="mb-3 text-secondary">“The voice assistant feature in Hindi makes it very easy to use for everyone in our village.”</p>
-          <div class="fw-bold text-success">— Sunita Devi, Madhya Pradesh</div>
+        <div class="card km-card p-4 h-100">
+          <div class="text-warning mb-2">★★★★★</div>
+          <p class="mb-3 text-secondary">“हिंदी वॉइस असिस्टेंट में बोलकर सवाल पूछना बहुत आसान है। मौसम, खाद और सरकारी योजना की पूरी जानकारी बोलकर सुनाता है।”</p>
+          <div class="mt-auto d-flex align-items-center gap-2">
+            <span class="fs-4">👩‍🌾</span>
+            <div>
+              <div class="fw-bold text-success">Sunita Devi</div>
+              <small class="text-muted">Sehore, Madhya Pradesh</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>

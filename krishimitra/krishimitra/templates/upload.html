@@ -1,102 +1,147 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="py-5">
-  <div class="container" style="max-width: 850px;">
-    
-    <div class="text-center mb-4">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🌿 AI Computer Vision</span>
-      <h2 class="fw-bold text-success">Plant Disease Detection</h2>
-      <p class="text-muted">Upload a clear photo of the leaf to instantly detect plant diseases and get organic/chemical treatment guides.</p>
-    </div>
+<section class="py-4 py-lg-5">
+  <div class="container" style="max-width: 960px;">
 
-    <!-- Upload Card -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 text-center mb-4">
-      <div class="card-body">
-        
-        <form method="POST" enctype="multipart/form-data" id="diseaseForm">
-          {% csrf_token %}
-
-          <div class="border border-2 border-dashed rounded-4 p-4 mb-3 bg-light position-relative hover-shadow" id="dropArea">
-            <div class="py-3">
-              <span class="display-4 text-success d-block mb-2">📷</span>
-              <h6 class="fw-bold text-dark">Drag & Drop Leaf Image Here</h6>
-              <p class="small text-muted mb-3">Supports JPG, JPEG, PNG format</p>
-              <input type="file" name="image" id="fileInput" accept="image/*" required onchange="previewImage(event)" class="form-control d-none">
-              <button type="button" class="btn btn-success rounded-pill px-4" onclick="document.getElementById('fileInput').click()">Browse Image</button>
-            </div>
-            
-            <img id="preview" style="display:none; max-height:280px; width:auto;" class="mx-auto rounded-3 shadow-sm mt-3">
-          </div>
-
-          <div class="mt-4">
-            <button type="submit" id="submitBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
-              🔍 Detect Disease & Remedies
-            </button>
-          </div>
-        </form>
-
+    <!-- Page Header Banner -->
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🍅 4-Model Deep Ensemble + TTA + Tomato Verifier</span>
+      <h2 class="fw-bold mb-1">AI Tomato Leaf Disease Scanner</h2>
+      <p class="mb-3 text-white-50">टमाटर की पत्ती (Tomato Leaf) की साफ फोटो अपलोड करें — हमारा 4-Model Ensemble AI तुरंत रोग की पहचान (95%+ सटीकता) और जैविक व रासायनिक इलाज बताएगा।</p>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="badge bg-white bg-opacity-10 text-white border border-light border-opacity-25 rounded-pill px-3 py-1">🍅 Early &amp; Late Blight</span>
+        <span class="badge bg-white bg-opacity-10 text-white border border-light border-opacity-25 rounded-pill px-3 py-1">🦠 Bacterial &amp; Septoria Spot</span>
+        <span class="badge bg-white bg-opacity-10 text-white border border-light border-opacity-25 rounded-pill px-3 py-1">🎯 Target Spot &amp; Leaf Mold</span>
+        <span class="badge bg-white bg-opacity-10 text-white border border-light border-opacity-25 rounded-pill px-3 py-1">🧬 Yellow Curl &amp; Mosaic Virus</span>
+        <span class="badge bg-white bg-opacity-10 text-white border border-light border-opacity-25 rounded-pill px-3 py-1">🕷️ Spider Mites &amp; Healthy</span>
       </div>
     </div>
 
-    <!-- Error Alert -->
-    {% if error %}
-    <div class="alert alert-danger rounded-4 shadow-sm" role="alert">
-      ⚠️ {{ error }}
+    <!-- Upload Card -->
+    <div class="card km-card p-4 text-center mb-4">
+      <div class="card-body p-2">
+        <form method="POST" enctype="multipart/form-data" id="diseaseForm">
+          {% csrf_token %}
+
+          <div class="km-dropzone p-4 p-md-5 mb-3 position-relative" id="dropArea" onclick="document.getElementById('fileInput').click()">
+            <div id="uploadPrompt">
+              <div class="km-icon-box mx-auto mb-3" style="width: 72px; height: 72px; font-size: 2.2rem;">🍅</div>
+              <h5 class="fw-bold text-dark mb-1">Drag &amp; Drop Tomato Leaf Photo Here, or Click to Browse</h5>
+              <p class="small text-muted mb-3">केवल टमाटर की पत्ती (Tomato Leaf) की फोटो चुनें — गैर-टमाटर पत्ती होने पर सिस्टम स्वतः सचेत करेगा</p>
+              <button type="button" class="btn btn-outline-success rounded-pill px-4 fw-semibold" onclick="event.stopPropagation(); document.getElementById('fileInput').click();">
+                📂 Choose Tomato Leaf Image
+              </button>
+            </div>
+
+            <input type="file" name="image" id="fileInput" accept="image/*" required onchange="previewImage(event)" class="form-control d-none">
+
+            <div id="previewContainer" class="d-none mt-3">
+              <img id="preview" style="max-height: 260px; width: auto;" class="mx-auto rounded-4 shadow border border-success border-opacity-25 d-block">
+              <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                <span id="fileNameBadge" class="badge bg-success-subtle text-success rounded-pill px-3 py-2">Selected Image</span>
+                <button type="button" class="btn btn-sm btn-light border rounded-pill px-3" onclick="event.stopPropagation(); document.getElementById('fileInput').click();">
+                  🔄 Change Photo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" id="submitBtn" class="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+              <span id="submitBtnText">🔍 पत्ती की जांच करें (Verify &amp; Detect Disease)</span>
+              <span id="submitBtnSpinner" class="d-none">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                4-Model Ensemble AI पत्ती की जांच कर रहा है...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+
+    <!-- Error / Non-Tomato Leaf Rejection Card -->
+    {% if error %}
+      {% if not_tomato_error %}
+      <div class="card border-0 shadow rounded-4 p-4 mb-4" style="background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); border-left: 6px solid #dc2626 !important;">
+        <div class="row align-items-center g-3">
+          <div class="col-md-3 text-center">
+            <img id="rejectedImgPreview" src="#" style="display: none; max-height: 150px;" class="img-fluid rounded-3 border border-danger shadow-sm mx-auto mb-2">
+            <span class="badge bg-danger rounded-pill px-3 py-1">🚫 Non-Tomato Image</span>
+          </div>
+          <div class="col-md-9">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fs-3">❌</span>
+              <h4 class="fw-bold text-danger mb-0">This is NOT a Tomato Leaf! (यह टमाटर की पत्ती नहीं है!)</h4>
+            </div>
+            <p class="text-dark fw-medium mb-2">{{ error }}</p>
+            {% if error_hi %}
+            <p class="text-secondary small mb-3">🇮🇳 <strong>हिंदी संदेश:</strong> {{ error_hi }}</p>
+            {% endif %}
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-danger btn-sm rounded-pill px-4 fw-semibold" onclick="document.getElementById('fileInput').click()">
+                🍅 Upload Valid Tomato Leaf
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-danger rounded-4 shadow-sm border-0 p-4 mb-4" role="alert">
+        <strong>⚠️ त्रुटि (Error):</strong> {{ error }}
+      </div>
+      {% endif %}
     {% endif %}
 
     <!-- Results Section -->
     {% if result %}
-    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
-      
-      <!-- Top Header -->
-      <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
-        <div>
-          <span class="badge bg-danger rounded-pill px-3 py-1 mb-2 fs-6">🦠 Disease Detected</span>
-          <h3 class="fw-bold text-success mb-1">{{ result }}</h3>
-          <h5 class="text-secondary fw-normal mb-0">{{ title_hi }}</h5>
-        </div>
-        
-        <div class="text-end mt-2 mt-sm-0">
-          <span class="badge bg-success fs-5 px-3 py-2 rounded-pill">{{ confidence }}% Confidence</span>
-          <button id="ttsBtn" class="btn btn-outline-success btn-sm rounded-pill d-block mt-2 ms-auto">
-            🔊 Listen Diagnosis
-          </button>
-        </div>
-      </div>
+    <div class="card km-card p-4 mb-4" id="diagnosisResultCard">
 
-      <!-- Top 3 Predictions -->
-      <div class="mb-4 bg-light p-3 rounded-3">
-        <h6 class="fw-bold text-secondary mb-2">Model Confidence Breakdown</h6>
-        {% for r in results %}
-        <div class="mb-2">
-          <div class="d-flex justify-content-between small fw-semibold">
-            <span>{{ r.title_en }}</span>
-            <span>{{ r.confidence }}%</span>
+      <!-- Top Result Header -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4 gap-3">
+        <div>
+          <div class="d-flex flex-wrap gap-2 mb-2">
+            <span class="badge bg-success-subtle text-success border border-success border-opacity-25 rounded-pill px-3 py-1">✓ Verified Tomato Leaf</span>
+            {% if 'healthy' in result|lower %}
+              <span class="badge bg-success rounded-pill px-3 py-1">✅ Healthy Crop Leaf (स्वस्थ पत्ती)</span>
+            {% else %}
+              <span class="badge bg-danger rounded-pill px-3 py-1">🦠 Disease Detected (रोग की पहचान)</span>
+            {% endif %}
           </div>
-          <div class="progress" style="height: 8px;">
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{ r.confidence }}%;" aria-valuenow="{{ r.confidence }}" aria-valuemin="0" aria-valuemax="100"></div>
+          <h3 class="fw-bold text-success mb-1">{{ result }}</h3>
+          <h5 class="text-secondary fw-semibold mb-0">{{ title_hi }}</h5>
+        </div>
+
+        <div class="text-sm-end">
+          <div class="d-inline-block bg-success text-white fw-bold fs-5 px-4 py-2 rounded-pill shadow-sm mb-2">
+            🎯 {{ confidence }}% Accuracy / Confidence
+          </div>
+          <div class="d-flex gap-2 justify-content-sm-end">
+            <button id="ttsBtn" type="button" class="btn btn-outline-success btn-sm rounded-pill px-3 fw-semibold">
+              🔊 इलाज सुनें (Listen Audio)
+            </button>
+            <button id="ttsStopBtn" type="button" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+              ⏹️ Stop
+            </button>
           </div>
         </div>
-        {% endfor %}
       </div>
 
       <!-- Visual Leaf Segmentation Overlay Side-by-Side -->
       {% if segmented_image %}
       <div class="mb-4">
-        <h5 class="fw-bold text-success mb-3">🔍 Visual Leaf Contour Highlight</h5>
+        <h5 class="fw-bold text-success mb-3">🔍 Visual Leaf Inspection &amp; Disease Contour Overlay</h5>
         <div class="row text-center g-3">
-          <div class="col-6">
-            <div class="p-2 border rounded-3 bg-light">
-              <small class="d-block text-muted fw-semibold mb-2">Analyzed Leaf</small>
-              <img id="analyzedImg" src="#" style="display:none; max-height:220px;" class="img-fluid rounded-2">
+          <div class="col-md-6">
+            <div class="p-3 border rounded-4 bg-light h-100 d-flex flex-column justify-content-center align-items-center">
+              <span class="badge bg-secondary rounded-pill mb-2">1. Uploaded Tomato Leaf</span>
+              <img id="analyzedImg" src="/media/{{ segmented_image }}" style="max-height: 230px;" class="img-fluid rounded-3 shadow-sm">
             </div>
           </div>
-          <div class="col-6">
-            <div class="p-2 border rounded-3 bg-light">
-              <small class="d-block text-muted fw-semibold mb-2">Diseased Area Contour Overlay</small>
-              <img src="/media/{{ segmented_image }}" style="max-height:220px;" class="img-fluid rounded-2">
+          <div class="col-md-6">
+            <div class="p-3 border rounded-4 bg-light h-100 d-flex flex-column justify-content-center align-items-center">
+              <span class="badge bg-danger rounded-pill mb-2">2. AI Lesion Contour Highlight</span>
+              <img src="/media/{{ segmented_image }}" style="max-height: 230px;" class="img-fluid rounded-3 shadow-sm">
             </div>
           </div>
         </div>
@@ -105,78 +150,96 @@
 
       <!-- Supervised U-Net Leaf Segmentation & Lesion Extraction Panel -->
       {% if unet_leaf_mask %}
-      <div class="mb-4 p-3 bg-light rounded-3 border">
-        <h6 class="fw-bold text-success mb-3">🧠 Supervised U-Net Leaf Segmentation & Lesion Extraction</h6>
-        <div class="row text-center g-2">
-          <div class="col-4">
-            <small class="d-block text-muted fw-semibold mb-1">U-Net Leaf Mask</small>
-            <img src="/media/{{ unet_leaf_mask }}" style="max-height:160px;" class="img-fluid rounded border">
+      <div class="mb-4 p-3 bg-light rounded-4 border">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+          <h6 class="fw-bold text-success mb-0">🧠 Supervised U-Net Leaf Segmentation &amp; Lesion Extraction</h6>
+          <span class="badge bg-success-subtle text-success rounded-pill">Pixel-Level Masking</span>
+        </div>
+        <div class="row text-center g-3">
+          <div class="col-md-4 col-4">
+            <div class="bg-white p-2 rounded-3 border h-100">
+              <small class="d-block text-muted fw-semibold mb-1">U-Net Leaf Mask</small>
+              <img src="/media/{{ unet_leaf_mask }}" style="max-height: 150px;" class="img-fluid rounded">
+            </div>
           </div>
-          <div class="col-4">
-            <small class="d-block text-muted fw-semibold mb-1">Black Background</small>
-            <img src="/media/{{ unet_black_bg }}" style="max-height:160px;" class="img-fluid rounded border">
+          <div class="col-md-4 col-4">
+            <div class="bg-white p-2 rounded-3 border h-100">
+              <small class="d-block text-muted fw-semibold mb-1">Isolated Leaf ROI</small>
+              <img src="/media/{{ unet_black_bg }}" style="max-height: 150px;" class="img-fluid rounded">
+            </div>
           </div>
-          <div class="col-4">
-            <small class="d-block text-muted fw-semibold mb-1">Disease Lesion Mask</small>
-            <img src="/media/{{ unet_disease_mask }}" style="max-height:160px;" class="img-fluid rounded border">
+          <div class="col-md-4 col-4">
+            <div class="bg-white p-2 rounded-3 border h-100">
+              <small class="d-block text-muted fw-semibold mb-1">Disease Lesion Mask</small>
+              <img src="/media/{{ unet_disease_mask }}" style="max-height: 150px;" class="img-fluid rounded">
+            </div>
           </div>
         </div>
       </div>
       {% endif %}
 
-      <!-- Agricultural Treatment Guide Accordion -->
+      <!-- Top 3 Predictions -->
+      <div class="mb-4 bg-light p-3 rounded-4 border">
+        <h6 class="fw-bold text-secondary mb-3">📊 4-Model Ensemble Top-3 Probability Distribution</h6>
+        {% for r in results %}
+        <div class="mb-2">
+          <div class="d-flex justify-content-between small fw-semibold mb-1">
+            <span>{{ r.title_en }}</span>
+            <span class="text-success fw-bold">{{ r.confidence }}%</span>
+          </div>
+          <div class="progress rounded-pill" style="height: 10px;">
+            <div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: {{ r.confidence }}%;" aria-valuenow="{{ r.confidence }}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Direct 2x2 Actionable Treatment Cards -->
       {% if details %}
-      <div class="accordion rounded-3 overflow-hidden shadow-sm" id="remedyAccordion">
-        <div class="accordion-item border-0">
-          <h2 class="accordion-header">
-            <button class="accordion-button bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSymptoms">
-              📌 Symptoms & Disease Cause
-            </button>
-          </h2>
-          <div id="collapseSymptoms" class="accordion-collapse collapse show" data-bs-parent="#remedyAccordion">
-            <div class="accordion-body bg-white">
-              <p><strong>Causative Agent:</strong> {{ details.cause }}</p>
-              <p class="mb-0"><strong>Key Symptoms:</strong> {{ details.symptoms }}</p>
+      <h5 class="fw-bold text-success mb-3">💊 Scientific Treatment &amp; Management Guide (उपचार और रोकथाम)</h5>
+      <div class="row g-3">
+        <!-- Symptoms & Cause -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-4 border h-100 bg-light">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fs-4">📌</span>
+              <h6 class="fw-bold text-dark mb-0">Symptoms &amp; Cause (लक्षण और कारण)</h6>
             </div>
+            <p class="small mb-2"><strong>Causative Agent:</strong> {{ details.cause }}</p>
+            <p class="small text-secondary mb-0"><strong>Key Symptoms:</strong> {{ details.symptoms }}</p>
           </div>
         </div>
 
-        <div class="accordion-item border-0">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrganic">
-              🌱 Organic Treatment & Biological Control
-            </button>
-          </h2>
-          <div id="collapseOrganic" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
-            <div class="accordion-body bg-white">
-              <p class="mb-0">{{ details.organic_treatment }}</p>
+        <!-- Organic Treatment -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-4 border border-success border-opacity-25 h-100 bg-success-subtle">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fs-4">🌱</span>
+              <h6 class="fw-bold text-success mb-0">Organic Remedy (जैविक उपचार)</h6>
             </div>
+            <p class="small text-dark mb-0">{{ details.organic_treatment }}</p>
           </div>
         </div>
 
-        <div class="accordion-item border-0">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChemical">
-              🧪 Recommended Chemical Spray
-            </button>
-          </h2>
-          <div id="collapseChemical" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
-            <div class="accordion-body bg-white">
-              <p class="mb-0">{{ details.chemical_treatment }}</p>
+        <!-- Chemical Spray -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-4 border border-warning border-opacity-50 h-100" style="background: rgba(254, 243, 199, 0.45);">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fs-4">🧪</span>
+              <h6 class="fw-bold text-dark mb-0">Recommended Chemical Spray (रासायनिक दवा)</h6>
             </div>
+            <p class="small text-dark mb-0">{{ details.chemical_treatment }}</p>
           </div>
         </div>
 
-        <div class="accordion-item border-0">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-success-subtle text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrevention">
-              🛡️ Long-term Field Prevention
-            </button>
-          </h2>
-          <div id="collapsePrevention" class="accordion-collapse collapse" data-bs-parent="#remedyAccordion">
-            <div class="accordion-body bg-white">
-              <p class="mb-0">{{ details.prevention }}</p>
+        <!-- Long-term Prevention -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-4 border h-100 bg-light">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fs-4">🛡️</span>
+              <h6 class="fw-bold text-dark mb-0">Field Prevention (बचाव के उपाय)</h6>
             </div>
+            <p class="small text-secondary mb-0">{{ details.prevention }}</p>
           </div>
         </div>
       </div>
@@ -189,35 +252,111 @@
 </section>
 
 <script>
-function previewImage(event){
-  var reader = new FileReader();
-  reader.onload = function(){
-    var img = document.getElementById("preview");
-    img.src = reader.result;
-    img.style.display = "block";
-    var analyzedImg = document.getElementById("analyzedImg");
-    if(analyzedImg){
-      analyzedImg.src = reader.result;
-      analyzedImg.style.display = "inline-block";
-    }
+function showPreviewDataUrl(dataUrl, fileName) {
+  var preview = document.getElementById("preview");
+  var previewContainer = document.getElementById("previewContainer");
+  var fileNameBadge = document.getElementById("fileNameBadge");
+  if (preview && previewContainer) {
+    preview.src = dataUrl;
+    previewContainer.classList.remove("d-none");
   }
-  if(event.target.files[0]){
-    reader.readAsDataURL(event.target.files[0]);
+  if (fileNameBadge && fileName) {
+    fileNameBadge.textContent = "📎 " + fileName;
+  }
+  var analyzedImg = document.getElementById("analyzedImg");
+  if (analyzedImg) {
+    analyzedImg.src = dataUrl;
   }
 }
 
+function previewImage(event) {
+  var file = event.target.files && event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function() {
+    try {
+      sessionStorage.setItem("km_last_leaf_img", reader.result);
+    } catch (e) {}
+    showPreviewDataUrl(reader.result, file.name);
+  };
+  reader.readAsDataURL(file);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-  const ttsBtn = document.getElementById("ttsBtn");
-  if(ttsBtn) {
+  // Restore uploaded leaf image into #analyzedImg or #rejectedImgPreview after form submit
+  var savedImg = null;
+  try {
+    savedImg = sessionStorage.getItem("km_last_leaf_img");
+  } catch (e) {}
+  var analyzedImg = document.getElementById("analyzedImg");
+  if (analyzedImg && savedImg) {
+    analyzedImg.src = savedImg;
+  }
+  var rejectedImg = document.getElementById("rejectedImgPreview");
+  if (rejectedImg && savedImg) {
+    rejectedImg.src = savedImg;
+    rejectedImg.style.display = "block";
+  }
+
+  // Drag and drop support
+  var dropArea = document.getElementById("dropArea");
+  var fileInput = document.getElementById("fileInput");
+  if (dropArea && fileInput) {
+    ["dragenter", "dragover"].forEach(function(evtName) {
+      dropArea.addEventListener(evtName, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropArea.classList.add("dragover");
+      });
+    });
+    ["dragleave", "drop"].forEach(function(evtName) {
+      dropArea.addEventListener(evtName, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropArea.classList.remove("dragover");
+      });
+    });
+    dropArea.addEventListener("drop", function(e) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        previewImage({ target: fileInput });
+      }
+    });
+  }
+
+  // Loading state on form submission
+  var diseaseForm = document.getElementById("diseaseForm");
+  if (diseaseForm) {
+    diseaseForm.addEventListener("submit", function() {
+      var btn = document.getElementById("submitBtn");
+      var txt = document.getElementById("submitBtnText");
+      var spin = document.getElementById("submitBtnSpinner");
+      if (btn && txt && spin) {
+        btn.disabled = true;
+        txt.classList.add("d-none");
+        spin.classList.remove("d-none");
+      }
+    });
+  }
+
+  // Text-to-speech readout
+  var ttsBtn = document.getElementById("ttsBtn");
+  var ttsStopBtn = document.getElementById("ttsStopBtn");
+  if (ttsBtn) {
     ttsBtn.addEventListener("click", function() {
-      if('speechSynthesis' in window) {
+      if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
-        const text = "{{ result }}. {{ title_hi }}. Organic treatment: {{ details.organic_treatment }}";
-        const utterance = new SpeechSynthesisUtterance(text);
+        var text = "{{ result|escapejs }}. {{ title_hi|escapejs }}. Organic treatment: {{ details.organic_treatment|escapejs }}. Chemical spray: {{ details.chemical_treatment|escapejs }}";
+        var utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = "en-IN";
         window.speechSynthesis.speak(utterance);
-      } else {
-        alert("Text to speech is not supported in your browser.");
+      }
+    });
+  }
+  if (ttsStopBtn) {
+    ttsStopBtn.addEventListener("click", function() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
       }
     });
   }

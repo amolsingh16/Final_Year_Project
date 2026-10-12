@@ -1,35 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container">
-    
-    <div class="text-center mb-5" data-aos="fade-up">
-      <h2 class="fw-bold text-success">About Krishi Mitra</h2>
-      <p class="text-muted">AI-Based Farmer Query Support & Decision Assistance System</p>
+
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">👨‍💻 B.Tech Final Year Project</span>
+      <h2 class="fw-bold mb-1">About Krishi Mitra &amp; Project Team</h2>
+      <p class="mb-0 text-white-50">AI-Based Farmer Query Support &amp; Decision Assistance System</p>
     </div>
 
-    <div class="row g-4 mb-5 align-items-center">
+    <div class="row g-4 mb-5 align-items-stretch">
       <div class="col-lg-6" data-aos="fade-up">
-        <h4 class="fw-bold text-success mb-3">Project Overview</h4>
-        <p class="text-secondary">
-          <strong>Krishi Mitra</strong> is an integrated artificial intelligence platform designed to address critical challenges in Indian agriculture. By combining Convolutional Neural Networks (CNN) for leaf disease diagnosis, real-time government market price APIs, live meteorological advisories, and soil NPK fertilizer calculators, Krishi Mitra provides actionable, localized support directly to farmers.
-        </p>
-        <p class="text-secondary">
-          The primary objective is accessibility—ensuring that complex AI models and agricultural data are presented through simple, multilingual, and voice-assisted web interfaces suitable for rural users.
-        </p>
+        <div class="card km-card p-4 h-100">
+          <h4 class="fw-bold text-success mb-3">🌿 Project Overview</h4>
+          <p class="text-secondary">
+            <strong>Krishi Mitra</strong> is an integrated Artificial Intelligence platform designed to address critical challenges in Indian agriculture. By combining Convolutional Neural Networks (CNN) and Supervised U-Net segmentation for leaf disease diagnosis, real-time Agmarknet 2.0 market price APIs, Open-Meteo meteorological advisories, and ICAR soil NPK fertilizer calculators, Krishi Mitra provides actionable, localized support directly to farmers.
+          </p>
+          <p class="text-secondary mb-0">
+            Our primary goal is accessibility — ensuring that deep learning models and real-time government datasets are presented through an intuitive, bilingual (Hindi &amp; English), and voice-assisted interface suitable for every farmer.
+          </p>
+        </div>
       </div>
 
       <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-light">
-          <h5 class="fw-bold text-success mb-3">🛠️ Technology Stack</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><strong>Backend Framework:</strong> Django 5.2 (Python)</li>
-            <li class="mb-2"><strong>Machine Learning:</strong> TensorFlow 2.21, Keras, OpenCV, NumPy</li>
-            <li class="mb-2"><strong>Database:</strong> SQLite 3 (ORM with Django Models)</li>
-            <li class="mb-2"><strong>External APIs:</strong> Agmarknet API (GOI OGD), Open-Meteo Weather API</li>
-            <li class="mb-2"><strong>Frontend & UX:</strong> HTML5, CSS3, JavaScript, Bootstrap 5.3, AOS Animations</li>
-            <li><strong>Voice Synthesis & STT:</strong> Web Speech API (SpeechRecognition & SpeechSynthesis)</li>
-          </ul>
+        <div class="card km-card p-4 h-100">
+          <h4 class="fw-bold text-success mb-3">🛠️ Technology Stack</h4>
+          <div class="row g-2">
+            <div class="col-sm-6">
+              <div class="p-3 rounded-3 bg-light border h-100">
+                <small class="text-muted d-block">Backend Framework</small>
+                <strong class="text-dark">Django 5.2 (Python 3)</strong>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-3 bg-light border h-100">
+                <small class="text-muted d-block">Deep Learning &amp; Vision</small>
+                <strong class="text-dark">TensorFlow 2.21, Keras, OpenCV</strong>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-3 bg-light border h-100">
+                <small class="text-muted d-block">Live Market &amp; Weather APIs</small>
+                <strong class="text-dark">Agmarknet 2.0 &amp; Open-Meteo</strong>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-3 bg-light border h-100">
+                <small class="text-muted d-block">Voice &amp; Frontend UX</small>
+                <strong class="text-dark">Web Speech API, Bootstrap 5.3</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -37,146 +58,85 @@
     <!-- Mission & Vision -->
     <div class="row g-4 mb-5">
       <div class="col-md-6" data-aos="fade-up">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-success text-white">
+        <div class="card border-0 shadow rounded-4 p-4 h-100 text-white" style="background: linear-gradient(135deg, #16a34a 0%, #0f3d26 100%);">
           <h5 class="fw-bold mb-2">🎯 Our Mission</h5>
           <p class="mb-0 text-white-50">Empower Indian farmers with accessible, timely, and scientific agricultural guidance to reduce crop loss, optimize fertilizer usage, and maximize crop yields.</p>
         </div>
       </div>
       <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-dark text-white">
+        <div class="card border-0 shadow rounded-4 p-4 h-100 bg-dark text-white">
           <h5 class="fw-bold mb-2">👁️ Our Vision</h5>
           <p class="mb-0 text-white-50">To bridge the technological gap between modern AI advancements and rural agricultural practices through intuitive, multi-modal digital solutions.</p>
         </div>
       </div>
     </div>
 
+    <!-- Project Team -->
+    <div class="mb-5" data-aos="fade-up">
+      <div class="text-center mb-4">
+        <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">👨‍💻 Project Team</span>
+        <h3 class="fw-bold text-success">Meet the Developers</h3>
+        <p class="text-muted mb-0">Developed as a B.Tech Final Year Project</p>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-6 col-lg-3" data-aos="fade-up">
+          <div class="card km-card p-4 text-center h-100 hover-lift">
+            <div class="km-icon-box rounded-circle mx-auto mb-3" style="width: 76px; height: 76px; font-size: 2rem;">👨‍💻</div>
+            <h5 class="fw-bold mb-1">Amol Singh</h5>
+            <p class="text-success small fw-semibold mb-1">B.Tech – CSE</p>
+            <p class="text-muted small mb-0">Developer &amp; Team Member</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="50">
+          <div class="card km-card p-4 text-center h-100 hover-lift">
+            <div class="km-icon-box rounded-circle mx-auto mb-3" style="width: 76px; height: 76px; font-size: 2rem;">👨‍💻</div>
+            <h5 class="fw-bold mb-1">Ashish Kumar</h5>
+            <p class="text-success small fw-semibold mb-1">B.Tech – CSE</p>
+            <p class="text-muted small mb-0">Project Team Member</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="card km-card p-4 text-center h-100 hover-lift">
+            <div class="km-icon-box rounded-circle mx-auto mb-3" style="width: 76px; height: 76px; font-size: 2rem;">👨‍💻</div>
+            <h5 class="fw-bold mb-1">Amit Kumar</h5>
+            <p class="text-success small fw-semibold mb-1">B.Tech – CSE</p>
+            <p class="text-muted small mb-0">Project Team Member</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="150">
+          <div class="card km-card p-4 text-center h-100 hover-lift">
+            <div class="km-icon-box rounded-circle mx-auto mb-3" style="width: 76px; height: 76px; font-size: 2rem;">👨‍💻</div>
+            <h5 class="fw-bold mb-1">Shyam Babu</h5>
+            <p class="text-success small fw-semibold mb-1">B.Tech – CSE (AIML)</p>
+            <p class="text-muted small mb-0">Project Team Member</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Guidance -->
+    <div class="row g-4">
+      <div class="col-md-6" data-aos="fade-up">
+        <div class="card km-card p-4 h-100">
+          <h5 class="fw-bold text-success mb-2">🎓 Project Guidance</h5>
+          <p class="mb-1"><strong>Under the Supervision of:</strong></p>
+          <p class="text-secondary fs-5 fw-semibold mb-0">Dr. Mohd. Osama</p>
+        </div>
+      </div>
+
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card km-card p-4 h-100">
+          <h5 class="fw-bold text-success mb-2">🏫 Institution &amp; Department</h5>
+          <p class="mb-1"><strong>Department of Computer Science &amp; Engineering</strong></p>
+          <p class="text-secondary fs-5 fw-semibold mb-0">United Institute of Technology</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
-
-
-<!-- Project Team -->
-<div class="mb-5" data-aos="fade-up">
-  <div class="text-center mb-4">
-    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">
-      👨‍💻 Project Team
-    </span>
-    <h4 class="fw-bold text-success">Meet the Team</h4>
-    <p class="text-muted mb-0">
-      Developed as a B.Tech Final Year Project
-    </p>
-  </div>
-
-  <div class="row g-4 justify-content-center">
-
-    <!-- Team Member 1 -->
-    <div class="col-md-6 col-lg-4" data-aos="fade-up">
-      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
-        <div class="rounded-circle bg-success-subtle text-success
-                    d-flex align-items-center justify-content-center mx-auto mb-3"
-          style="width: 80px; height: 80px; font-size: 32px;">
-          👨‍💻
-        </div>
-
-        <h5 class="fw-bold mb-1">Amol Singh</h5>
-        <p class="text-success fw-semibold mb-2">
-          B.Tech – Computer Science & Engineering
-        </p>
-        <p class="text-muted small mb-0">
-          Developer & Project Team Member
-        </p>
-      </div>
-    </div>
-
-    <!-- Team Member 2 -->
-    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
-        <div class="rounded-circle bg-success-subtle text-success
-                    d-flex align-items-center justify-content-center mx-auto mb-3"
-          style="width: 80px; height: 80px; font-size: 32px;">
-          👨‍💻
-        </div>
-
-        <h5 class="fw-bold mb-1">Ashish Kumar</h5>
-        <p class="text-success fw-semibold mb-2">
-          B.Tech – Computer Science & Engineering
-        </p>
-        <p class="text-muted small mb-0">
-          Project Team Member
-        </p>
-      </div>
-    </div>
-
-    <!-- Team Member 3 -->
-    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
-        <div class="rounded-circle bg-success-subtle text-success
-                    d-flex align-items-center justify-content-center mx-auto mb-3"
-          style="width: 80px; height: 80px; font-size: 32px;">
-          👨‍💻
-        </div>
-
-        <h5 class="fw-bold mb-1">Amit Kumar</h5>
-        <p class="text-success fw-semibold mb-2">
-          B.Tech – Computer Science & Engineering
-        </p>
-        <p class="text-muted small mb-0">
-          Project Team Member
-        </p>
-      </div>
-    </div>
-
-    <!-- Team Member 4 -->
-    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-      <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
-        <div class="rounded-circle bg-success-subtle text-success
-                        d-flex align-items-center justify-content-center mx-auto mb-3"
-          style="width: 80px; height: 80px; font-size: 32px;">
-          👨‍💻
-        </div>
-    
-        <h5 class="fw-bold mb-1">Shyam Babu</h5>
-        <p class="text-success fw-semibold mb-2">
-          B.Tech – CSE - AIML
-        </p>
-        <p class="text-muted small mb-0">
-          Project Team Member
-        </p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Project Guidance -->
-<div class="row g-4 mb-5">
-  <div class="col-md-6" data-aos="fade-up">
-    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-      <h5 class="fw-bold text-success mb-3">🎓 Project Guidance</h5>
-
-      <p class="mb-1">
-        <strong>Under the Guidance of</strong>
-      </p>
-
-      <p class="text-muted mb-0">
-        Dr. Mohd. Osama
-      </p>
-    </div>
-  </div>
-
-  <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-      <h5 class="fw-bold text-success mb-3">🏫 Department</h5>
-
-      <p class="mb-1">
-        <strong>Computer Science & Engineering</strong>
-      </p>
-
-      <p class="text-muted mb-0">
-        United Institute Of Technology
-      </p>
-    </div>
-  </div>
-</div>
-
-
 {% endblock %}

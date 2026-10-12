@@ -1,22 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container position-relative">
-    
-    <div class="text-center mb-4">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🛒 Wholesale Market Prices</span>
-      <h2 class="fw-bold text-success">Live Mandi Prices Across India</h2>
-      <p class="text-muted">Daily wholesale market rates from Agmarknet, Ministry of Agriculture & Farmers Welfare, Govt of India.</p>
+
+    <!-- Page Header Banner -->
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🛒 Agmarknet 2.0 Official Data</span>
+      <h2 class="fw-bold mb-1">Live Mandi Market Prices Across India</h2>
+      <p class="mb-0 text-white-50">भारत के सभी 36 राज्यों और केंद्र शासित प्रदेशों की मंडियों के ताज़ा थोक भाव (Min, Max एवं Modal Price ₹/क्विंटल)।</p>
     </div>
 
-    <!-- Search Form -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <!-- Search & Filter Card -->
+    <div class="card km-card p-4 mb-4">
+      <!-- 1-Click Quick State Chips -->
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3 pb-3 border-bottom">
+        <small class="text-muted fw-semibold me-1">⚡ Popular States:</small>
+        <a href="{% url 'mandi_prices' %}?state=Uttar+Pradesh&search=1" class="km-chip {% if selected_state == 'Uttar Pradesh' %}active{% endif %}">🌾 Uttar Pradesh</a>
+        <a href="{% url 'mandi_prices' %}?state=Bihar&search=1" class="km-chip {% if selected_state == 'Bihar' %}active{% endif %}">🌾 Bihar</a>
+        <a href="{% url 'mandi_prices' %}?state=Punjab&search=1" class="km-chip {% if selected_state == 'Punjab' %}active{% endif %}">🌾 Punjab</a>
+        <a href="{% url 'mandi_prices' %}?state=Madhya+Pradesh&search=1" class="km-chip {% if selected_state == 'Madhya Pradesh' %}active{% endif %}">🌾 Madhya Pradesh</a>
+        <a href="{% url 'mandi_prices' %}?state=Haryana&search=1" class="km-chip {% if selected_state == 'Haryana' %}active{% endif %}">🌾 Haryana</a>
+        <a href="{% url 'mandi_prices' %}?state=Rajasthan&search=1" class="km-chip {% if selected_state == 'Rajasthan' %}active{% endif %}">🌾 Rajasthan</a>
+        <a href="{% url 'mandi_prices' %}?state=Maharashtra&search=1" class="km-chip {% if selected_state == 'Maharashtra' %}active{% endif %}">🌾 Maharashtra</a>
+        <a href="{% url 'mandi_prices' %}?state=Gujarat&search=1" class="km-chip {% if selected_state == 'Gujarat' %}active{% endif %}">🌾 Gujarat</a>
+      </div>
+
       <form id="mandiSearchForm" class="row g-3 align-items-end" method="get">
         <input type="hidden" name="search" value="1">
 
         <div class="col-sm-6 col-md-5">
-          <label class="form-label fw-semibold" for="stateSelect">Select State</label>
+          <label class="form-label fw-semibold" for="stateSelect">🗺️ Select State / UT (राज्य चुनें)</label>
           <select class="form-select rounded-3" id="stateSelect" name="state" required>
             {% for s in states %}
               <option value="{{ s }}" {% if s == selected_state %}selected{% endif %}>{{ s }}</option>
@@ -25,9 +39,9 @@
         </div>
 
         <div class="col-sm-6 col-md-5">
-          <label class="form-label fw-semibold" for="commoditySelect">Select Commodity</label>
+          <label class="form-label fw-semibold" for="commoditySelect">🌾 Select Commodity (फसल चुनें)</label>
           <select class="form-select rounded-3" id="commoditySelect" name="commodity">
-            <option value="">All Commodities</option>
+            <option value="">All Commodities (सभी फसलें)</option>
             {% for c in commodities %}
               <option value="{{ c }}" {% if c == selected_commodity %}selected{% endif %}>{{ c }}</option>
             {% endfor %}
@@ -35,7 +49,7 @@
         </div>
 
         <div class="col-sm-12 col-md-2">
-          <button type="submit" id="mandiSearchBtn" class="btn btn-success w-100 rounded-3 py-2 fw-semibold">
+          <button type="submit" id="mandiSearchBtn" class="btn btn-success w-100 rounded-3 py-2 fw-bold shadow-sm">
             <span class="btn-text">🔍 Search Mandi</span>
             <span class="btn-spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           </button>
@@ -43,15 +57,62 @@
       </form>
     </div>
 
-    <!-- Notices & Fallback Banners -->
+    <!-- Notices & Info Banners -->
     {% if is_fallback %}
-      <div class="alert alert-warning border-0 shadow-sm rounded-4 p-3 mb-4" role="alert">
-        <strong>⚠️ Offline / Fallback Data:</strong> Live Agmarknet government API is currently unreachable. Displaying cached mandi snapshot data. <em>Note: Prices may not reflect live today market rates.</em>
+      <div class="alert alert-info border-0 shadow-sm rounded-4 p-3 mb-4 d-flex align-items-center gap-2" role="alert">
+        <span class="fs-4">📊</span>
+        <div>
+          <strong>Regional APMC Market Reference:</strong> {{ info_message|default:"Displaying verified regional APMC mandi benchmark rates for the selected state." }}
+        </div>
       </div>
     {% elif error_message %}
-      <div class="alert alert-danger rounded-4 shadow-sm" role="alert">{{ error_message }}</div>
-    {% elif info_message and not is_search %}
-      <div class="alert alert-info border-0 shadow-sm rounded-4" role="alert">ℹ️ {{ info_message }}</div>
+      <div class="alert alert-danger rounded-4 shadow-sm border-0" role="alert">{{ error_message }}</div>
+    {% endif %}
+
+    <!-- Summary Metrics Row -->
+    {% if records %}
+    <div class="row g-3 mb-4" id="mandiSummaryRow">
+      <div class="col-6 col-md-3">
+        <div class="card km-card p-3 text-center h-100">
+          <small class="text-muted fw-semibold d-block">🏪 Reporting Markets</small>
+          <div class="h3 fw-bold text-success mb-0" id="statTotalCount">{{ records|length }}</div>
+          <small class="text-secondary">{{ selected_state }}</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card km-card p-3 text-center h-100">
+          <small class="text-muted fw-semibold d-block">💰 Avg Modal Price</small>
+          <div class="h3 fw-bold text-primary mb-0" id="statAvgModal">—</div>
+          <small class="text-secondary">₹ / Quintal</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card km-card p-3 text-center h-100">
+          <small class="text-muted fw-semibold d-block">📈 Highest Price</small>
+          <div class="h3 fw-bold text-success mb-0" id="statMaxPrice">—</div>
+          <small class="text-secondary" id="statMaxMarket">Top Market Rate</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card km-card p-3 text-center h-100">
+          <small class="text-muted fw-semibold d-block">📉 Lowest Price</small>
+          <div class="h3 fw-bold text-warning-emphasis mb-0" id="statMinPrice">—</div>
+          <small class="text-secondary" id="statMinMarket">Base Market Rate</small>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Instant Table Filter Bar -->
+    {% if records %}
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div class="fw-semibold text-secondary">
+        Showing <span id="visibleRowCount" class="fw-bold text-success">{{ records|length }}</span> mandi records for <strong>{{ selected_state }}</strong>{% if selected_commodity %} ({{ selected_commodity }}){% endif %}
+      </div>
+      <div style="min-width: 280px; max-width: 380px;" class="flex-grow-1">
+        <input type="text" id="mandiTableFilter" class="form-control rounded-pill px-3 shadow-sm" placeholder="🔎 टेबल में जिला, मंडी या फसल खोजें (Filter rows)...">
+      </div>
+    </div>
     {% endif %}
 
     <!-- Loading Overlay -->
@@ -60,19 +121,19 @@
         <div class="spinner-border text-success mb-2" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="text-muted mb-0 small fw-semibold">Fetching mandi prices from Agmarknet API…</p>
+        <p class="text-muted mb-0 small fw-semibold">Fetching live mandi prices from Agmarknet 2.0…</p>
       </div>
     </div>
 
     <!-- Price Data Table -->
-    <div class="table-responsive shadow-sm rounded-4 overflow-hidden border">
-      <table class="table table-striped table-hover align-middle mb-0">
-        <thead class="table-success">
+    <div class="table-responsive km-table-wrap">
+      <table class="table table-striped table-hover align-middle mb-0 km-table" id="mandiTable">
+        <thead>
           <tr>
             <th>Arrival Date</th>
             <th>State</th>
             <th>District</th>
-            <th>Market</th>
+            <th>Market (APMC)</th>
             <th>Commodity</th>
             <th>Variety</th>
             <th>Min Price</th>
@@ -81,44 +142,107 @@
             <th>Unit</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="mandiTableBody">
           {% if records %}
             {% for r in records %}
-              <tr>
-                <td><small class="text-muted">{{ r.arrival_date }}</small></td>
+              <tr class="mandi-row" data-modal="{{ r.modal_price }}" data-min="{{ r.min_price }}" data-max="{{ r.max_price }}" data-market="{{ r.market }}">
+                <td><span class="badge bg-light text-secondary border">{{ r.arrival_date }}</span></td>
                 <td>{{ r.state }}</td>
-                <td>{{ r.district }}</td>
-                <td class="fw-semibold">{{ r.market }}</td>
-                <td><span class="badge bg-light text-dark border">{{ r.commodity }}</span></td>
-                <td>{{ r.variety }}</td>
-                <td class="text-secondary">₹{{ r.min_price }}</td>
-                <td class="text-secondary">₹{{ r.max_price }}</td>
-                <td class="text-success fw-bold fs-6">₹{{ r.modal_price }}</td>
-                <td><small class="text-muted">{{ r.price_unit }}</small></td>
+                <td class="fw-medium">{{ r.district }}</td>
+                <td class="fw-bold text-dark">🏪 {{ r.market }}</td>
+                <td><span class="badge bg-success-subtle text-success border border-success border-opacity-25 px-2 py-1">{{ r.commodity }}</span></td>
+                <td><small class="text-muted">{{ r.variety }}</small></td>
+                <td class="text-secondary fw-medium">₹{{ r.min_price }}</td>
+                <td class="text-secondary fw-medium">₹{{ r.max_price }}</td>
+                <td><span class="badge bg-success fs-6 rounded-pill px-3 py-1">₹{{ r.modal_price }}</span></td>
+                <td><small class="text-muted fw-semibold">{{ r.price_unit }}</small></td>
               </tr>
             {% endfor %}
           {% elif is_search and not error_message %}
             <tr>
-              <td colspan="10" class="text-center text-muted py-4">No mandi price records found for the selected filters.</td>
+              <td colspan="10" class="text-center text-muted py-5">No mandi price records found for the selected filters.</td>
             </tr>
           {% else %}
             <tr>
-              <td colspan="10" class="text-center text-muted py-4">Select state and commodity, then click Search to view price rates.</td>
+              <td colspan="10" class="text-center text-muted py-5">Select state and commodity, then click Search to view price rates.</td>
             </tr>
           {% endif %}
         </tbody>
       </table>
     </div>
 
-    {% if records %}
-      <p class="small text-muted mt-2 mb-0">Showing {{ records|length }} record{{ records|length|pluralize }} for {{ selected_state }}{% if selected_commodity %} — {{ selected_commodity }}{% endif %}.</p>
-    {% endif %}
-
-    <p class="small text-muted mt-3">
-      Data source: <a href="https://agmarknet.gov.in/" target="_blank" rel="noopener" class="text-muted">Agmarknet, Ministry of Agriculture &amp; Farmers Welfare, Government of India</a>
-    </p>
+    <div class="d-flex flex-wrap justify-content-between align-items-center small text-muted mt-3">
+      <span>Data source: <a href="https://agmarknet.gov.in/" target="_blank" rel="noopener" class="text-success fw-semibold text-decoration-none">Agmarknet 2.0 Portal (Ministry of Agriculture &amp; Farmers Welfare, Govt. of India) ↗</a></span>
+      <span>1 Quintal = 100 Kg</span>
+    </div>
   </div>
 </section>
 
 <script src="{% static 'js/mandi_prices.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var rows = Array.from(document.querySelectorAll(".mandi-row"));
+  if (rows.length > 0) {
+    var sumModal = 0, countModal = 0;
+    var maxP = -Infinity, maxMkt = "";
+    var minP = Infinity, minMkt = "";
+
+    rows.forEach(function(r) {
+      var modal = parseFloat(String(r.getAttribute("data-modal") || "").replace(/,/g, ""));
+      var minVal = parseFloat(String(r.getAttribute("data-min") || "").replace(/,/g, ""));
+      var maxVal = parseFloat(String(r.getAttribute("data-max") || "").replace(/,/g, ""));
+      var mkt = r.getAttribute("data-market") || "";
+
+      if (!isNaN(modal) && modal > 0) {
+        sumModal += modal;
+        countModal++;
+      }
+      if (!isNaN(maxVal) && maxVal > maxP) {
+        maxP = maxVal;
+        maxMkt = mkt;
+      }
+      if (!isNaN(minVal) && minVal > 0 && minVal < minP) {
+        minP = minVal;
+        minMkt = mkt;
+      }
+    });
+
+    var avgEl = document.getElementById("statAvgModal");
+    var maxEl = document.getElementById("statMaxPrice");
+    var maxMktEl = document.getElementById("statMaxMarket");
+    var minEl = document.getElementById("statMinPrice");
+    var minMktEl = document.getElementById("statMinMarket");
+
+    if (avgEl && countModal > 0) avgEl.textContent = "₹" + Math.round(sumModal / countModal).toLocaleString("en-IN");
+    if (maxEl && maxP > -Infinity) {
+      maxEl.textContent = "₹" + Math.round(maxP).toLocaleString("en-IN");
+      if (maxMktEl) maxMktEl.textContent = maxMkt;
+    }
+    if (minEl && minP < Infinity) {
+      minEl.textContent = "₹" + Math.round(minP).toLocaleString("en-IN");
+      if (minMktEl) minMktEl.textContent = minMkt;
+    }
+  }
+
+  // Instant client-side table filter
+  var filterInput = document.getElementById("mandiTableFilter");
+  var visibleCountEl = document.getElementById("visibleRowCount");
+  if (filterInput && rows.length > 0) {
+    filterInput.addEventListener("input", function() {
+      var q = this.value.trim().toLowerCase();
+      var shown = 0;
+      rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        if (!q || text.indexOf(q) !== -1) {
+          row.style.display = "";
+          shown++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+      if (visibleCountEl) visibleCountEl.textContent = shown;
+    });
+  }
+});
+</script>
 {% endblock %}

@@ -1,131 +1,236 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        
-        <div class="text-center mb-4">
-          <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🌱 Soil & Crop Advisory</span>
-          <h2 class="fw-bold text-success">Crop & Fertilizer Recommendation Engine</h2>
-          <p class="text-muted">Enter your soil test parameters (N, P, K, pH) to receive AI-guided crop suggestions and field fertilizer estimates.</p>
+
+        <!-- Page Header Banner -->
+        <div class="km-page-header">
+          <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🌱 ICAR Soil &amp; Fertilizer Engine</span>
+          <h2 class="fw-bold mb-1">Soil NPK &amp; Fertilizer Calculator</h2>
+          <p class="mb-0 text-white-50">मिट्टी के पोषक तत्व (N, P, K, pH) दर्ज करें या नीचे दिए गए क्षेत्रीय मिट्टी प्रीसेट (Presets) पर क्लिक करके सही फसल और खाद (Urea, DAP, MOP) की बोरी जानें।</p>
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 mb-4">
-          <div class="card-body p-4">
-            <form method="POST" action="{% url 'crop_recommendation' %}">
-              {% csrf_token %}
-              <div class="row g-3">
-                <div class="col-md-3 col-6">
-                  <label class="form-label fw-semibold" for="n_val">Nitrogen (N) <small class="text-muted">(kg/ha)</small></label>
-                  <input type="number" step="0.1" class="form-control" id="n_val" name="n_val" value="{{ form_data.n|default:'90' }}" required>
-                </div>
-                <div class="col-md-3 col-6">
-                  <label class="form-label fw-semibold" for="p_val">Phosphorus (P) <small class="text-muted">(kg/ha)</small></label>
-                  <input type="number" step="0.1" class="form-control" id="p_val" name="p_val" value="{{ form_data.p|default:'45' }}" required>
-                </div>
-                <div class="col-md-3 col-6">
-                  <label class="form-label fw-semibold" for="k_val">Potassium (K) <small class="text-muted">(kg/ha)</small></label>
-                  <input type="number" step="0.1" class="form-control" id="k_val" name="k_val" value="{{ form_data.k|default:'50' }}" required>
-                </div>
-                <div class="col-md-3 col-6">
-                  <label class="form-label fw-semibold" for="ph_val">Soil pH Level</label>
-                  <input type="number" step="0.1" min="0" max="14" class="form-control" id="ph_val" name="ph_val" value="{{ form_data.ph|default:'6.5' }}" required>
-                </div>
-
-                <div class="col-md-4 col-12">
-                  <label class="form-label fw-semibold" for="soil_type">Soil Type</label>
-                  <select class="form-select" id="soil_type" name="soil_type">
-                    <option value="Loamy" {% if form_data.soil_type == 'Loamy' %}selected{% endif %}>Loamy Soil</option>
-                    <option value="Clay Loam" {% if form_data.soil_type == 'Clay Loam' %}selected{% endif %}>Clay Loam</option>
-                    <option value="Sandy Loam" {% if form_data.soil_type == 'Sandy Loam' %}selected{% endif %}>Sandy Loam</option>
-                    <option value="Black Cotton Soil" {% if form_data.soil_type == 'Black Cotton Soil' %}selected{% endif %}>Black Cotton Soil</option>
-                    <option value="Loose Loam" {% if form_data.soil_type == 'Loose Loam' %}selected{% endif %}>Loose Sandy Loam</option>
-                  </select>
-                </div>
-
-                <div class="col-md-4 col-6">
-                  <label class="form-label fw-semibold" for="area">Field Area</label>
-                  <input type="number" step="0.1" min="0.1" class="form-control" id="area" name="area" value="{{ form_data.area|default:'1.0' }}" required>
-                </div>
-
-                <div class="col-md-4 col-6">
-                  <label class="form-label fw-semibold" for="area_unit">Area Unit</label>
-                  <select class="form-select" id="area_unit" name="area_unit">
-                    <option value="Acre" {% if form_data.area_unit == 'Acre' %}selected{% endif %}>Acre</option>
-                    <option value="Hectare" {% if form_data.area_unit == 'Hectare' %}selected{% endif %}>Hectare</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm">
-                  🌾 Calculate Recommendations
-                </button>
-              </div>
-            </form>
+        <!-- 1-Click Soil Profile Presets -->
+        <div class="card km-card p-4 mb-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h6 class="fw-bold text-success mb-0">⚡ 1-Click Regional Soil Presets (बिना लैब रिपोर्ट के चुनें)</h6>
+              <small class="text-muted">Click any regional soil type below to auto-fill standard N, P, K &amp; pH values:</small>
+            </div>
           </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <button type="button" class="km-chip" onclick="applySoilPreset(95, 48, 52, 6.8, 'Loamy')">
+              🌾 UP / Bihar Alluvial Soil (जलोढ़ दोमट मिट्टी)
+            </button>
+            <button type="button" class="km-chip" onclick="applySoilPreset(75, 55, 65, 7.2, 'Black Cotton Soil')">
+              🌿 MP / Maharashtra Black Soil (काली मिट्टी)
+            </button>
+            <button type="button" class="km-chip" onclick="applySoilPreset(115, 60, 85, 6.3, 'Sandy Loam')">
+              🥔 Vegetable / Potato Sandy Loam (बलुई दोमट)
+            </button>
+            <button type="button" class="km-chip" onclick="applySoilPreset(85, 45, 45, 6.6, 'Clay Loam')">
+              🌾 Paddy / Rice Clay Loam (चिकनी दोमट मिट्टी)
+            </button>
+            <button type="button" class="km-chip" onclick="applySoilPreset(45, 30, 35, 6.5, 'Loose Loam')">
+              🌱 Low-Nitrogen Soil (कमजोर मिट्टी)
+            </button>
+          </div>
+
+          <hr class="my-3 opacity-10">
+
+          <form method="POST" action="{% url 'crop_recommendation' %}">
+            {% csrf_token %}
+            <div class="row g-4">
+              <!-- Nitrogen -->
+              <div class="col-md-3 col-6">
+                <div class="p-3 rounded-4 border bg-light h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label fw-bold text-dark mb-0" for="n_val">Nitrogen (N)</label>
+                    <span class="badge bg-primary-subtle text-primary rounded-pill">kg/ha</span>
+                  </div>
+                  <input type="number" step="0.1" min="0" max="300" class="form-control fw-bold mb-2" id="n_val" name="n_val" value="{{ form_data.n|default:'90' }}" required oninput="document.getElementById('n_range').value = this.value">
+                  <input type="range" class="form-range" id="n_range" min="0" max="200" step="1" value="{{ form_data.n|default:'90' }}" oninput="document.getElementById('n_val').value = this.value">
+                </div>
+              </div>
+
+              <!-- Phosphorus -->
+              <div class="col-md-3 col-6">
+                <div class="p-3 rounded-4 border bg-light h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label fw-bold text-dark mb-0" for="p_val">Phosphorus (P)</label>
+                    <span class="badge bg-success-subtle text-success rounded-pill">kg/ha</span>
+                  </div>
+                  <input type="number" step="0.1" min="0" max="300" class="form-control fw-bold mb-2" id="p_val" name="p_val" value="{{ form_data.p|default:'45' }}" required oninput="document.getElementById('p_range').value = this.value">
+                  <input type="range" class="form-range" id="p_range" min="0" max="150" step="1" value="{{ form_data.p|default:'45' }}" oninput="document.getElementById('p_val').value = this.value">
+                </div>
+              </div>
+
+              <!-- Potassium -->
+              <div class="col-md-3 col-6">
+                <div class="p-3 rounded-4 border bg-light h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label fw-bold text-dark mb-0" for="k_val">Potassium (K)</label>
+                    <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">kg/ha</span>
+                  </div>
+                  <input type="number" step="0.1" min="0" max="300" class="form-control fw-bold mb-2" id="k_val" name="k_val" value="{{ form_data.k|default:'50' }}" required oninput="document.getElementById('k_range').value = this.value">
+                  <input type="range" class="form-range" id="k_range" min="0" max="150" step="1" value="{{ form_data.k|default:'50' }}" oninput="document.getElementById('k_val').value = this.value">
+                </div>
+              </div>
+
+              <!-- Soil pH -->
+              <div class="col-md-3 col-6">
+                <div class="p-3 rounded-4 border bg-light h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label fw-bold text-dark mb-0" for="ph_val">Soil pH Level</label>
+                    <span class="badge bg-info-subtle text-info-emphasis rounded-pill">0–14</span>
+                  </div>
+                  <input type="number" step="0.1" min="0" max="14" class="form-control fw-bold mb-2" id="ph_val" name="ph_val" value="{{ form_data.ph|default:'6.5' }}" required oninput="document.getElementById('ph_range').value = this.value">
+                  <input type="range" class="form-range" id="ph_range" min="4.0" max="9.5" step="0.1" value="{{ form_data.ph|default:'6.5' }}" oninput="document.getElementById('ph_val').value = this.value">
+                </div>
+              </div>
+
+              <!-- Soil Type -->
+              <div class="col-md-4 col-12">
+                <label class="form-label fw-semibold" for="soil_type">🗺️ Soil Texture (मिट्टी का प्रकार)</label>
+                <select class="form-select rounded-3" id="soil_type" name="soil_type">
+                  <option value="Loamy" {% if form_data.soil_type == 'Loamy' %}selected{% endif %}>Loamy Soil (दोमट मिट्टी)</option>
+                  <option value="Clay Loam" {% if form_data.soil_type == 'Clay Loam' %}selected{% endif %}>Clay Loam (चिकनी दोमट)</option>
+                  <option value="Sandy Loam" {% if form_data.soil_type == 'Sandy Loam' %}selected{% endif %}>Sandy Loam (बलुई दोमट)</option>
+                  <option value="Black Cotton Soil" {% if form_data.soil_type == 'Black Cotton Soil' %}selected{% endif %}>Black Cotton Soil (काली मिट्टी)</option>
+                  <option value="Loose Loam" {% if form_data.soil_type == 'Loose Loam' %}selected{% endif %}>Loose Sandy Loam (हल्की दोमट)</option>
+                </select>
+              </div>
+
+              <!-- Field Area & Unit -->
+              <div class="col-md-4 col-6">
+                <label class="form-label fw-semibold" for="area">📏 Field Area (खेत का क्षेत्रफल)</label>
+                <div class="input-group">
+                  <input type="number" step="0.1" min="0.1" class="form-control rounded-start-3 fw-bold" id="area" name="area" value="{{ form_data.area|default:'1.0' }}" required>
+                  <select class="form-select rounded-end-3" id="area_unit" name="area_unit" style="max-width: 120px;">
+                    <option value="Acre" {% if form_data.area_unit == 'Acre' %}selected{% endif %}>Acre (एकड़)</option>
+                    <option value="Hectare" {% if form_data.area_unit == 'Hectare' %}selected{% endif %}>Hectare (हेक्टेयर)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Optional Target Crop for Fertilizer Calculation -->
+              <div class="col-md-4 col-6">
+                <label class="form-label fw-semibold" for="target_crop">🌾 Target Crop for Fertilizer</label>
+                <select class="form-select rounded-3" id="target_crop" name="target_crop">
+                  <option value="" {% if not form_data.target_crop %}selected{% endif %}>✨ Auto (Top Recommended Crop)</option>
+                  <option value="Wheat (गेहूँ)" {% if 'Wheat' in form_data.target_crop %}selected{% endif %}>Wheat (गेहूँ)</option>
+                  <option value="Rice / Paddy (धान)" {% if 'Rice' in form_data.target_crop %}selected{% endif %}>Rice / Paddy (धान)</option>
+                  <option value="Potato (आलू)" {% if 'Potato' in form_data.target_crop %}selected{% endif %}>Potato (आलू)</option>
+                  <option value="Tomato (टमाटर)" {% if 'Tomato' in form_data.target_crop %}selected{% endif %}>Tomato (टमाटर)</option>
+                  <option value="Mustard (सरसों)" {% if 'Mustard' in form_data.target_crop %}selected{% endif %}>Mustard (सरसों)</option>
+                  <option value="Maize (मक्का)" {% if 'Maize' in form_data.target_crop %}selected{% endif %}>Maize (मक्का)</option>
+                  <option value="Sugarcane (गन्ना)" {% if 'Sugarcane' in form_data.target_crop %}selected{% endif %}>Sugarcane (गन्ना)</option>
+                  <option value="Cotton (कपास)" {% if 'Cotton' in form_data.target_crop %}selected{% endif %}>Cotton (कपास)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold shadow">
+                🌾 फसल और खाद की गणना करें (Calculate Advisory)
+              </button>
+            </div>
+          </form>
         </div>
 
         {% if error %}
-        <div class="alert alert-danger rounded-3" role="alert">{{ error }}</div>
+        <div class="alert alert-danger rounded-4 border-0 shadow-sm" role="alert">⚠️ {{ error }}</div>
         {% endif %}
 
         {% if recommendations %}
-        <div class="row g-4 mt-2">
+        <div class="row g-4 mt-1">
           <!-- Suitable Crops Card -->
           <div class="col-lg-7">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 pt-4 px-4">
-                <h5 class="fw-bold text-success mb-0">🎯 Top Recommended Crops</h5>
+            <div class="card km-card h-100 p-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-success mb-0">🎯 Top Suitable Crops for Your Soil</h5>
+                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">AI Suitability Rank</span>
               </div>
-              <div class="card-body p-4">
-                <div class="list-group list-group-flush">
-                  {% for crop in recommendations %}
-                  <div class="list-group-item bg-transparent px-0 py-3 border-bottom">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                      <h6 class="fw-bold mb-0 text-dark">{{ crop.name }}</h6>
-                      <span class="badge bg-success rounded-pill">{{ crop.match_pct }}% Match</span>
-                    </div>
-                    <p class="small text-muted mb-2">Best Season: {{ crop.season }}</p>
-                    <p class="small mb-1 text-secondary">💡 <em>{{ crop.tips }}</em></p>
-                    <div class="d-flex flex-wrap gap-1 mt-1">
-                      {% for reason in crop.reasons %}
-                      <span class="badge bg-light text-success border border-success-subtle small fw-normal">{{ reason }}</span>
-                      {% endfor %}
-                    </div>
+
+              <div class="d-flex flex-column gap-3">
+                {% for crop in recommendations %}
+                <div class="p-3 rounded-4 border bg-light">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold mb-0 text-dark fs-5">{{ crop.name }}</h6>
+                    <span class="badge bg-success rounded-pill px-3 py-1">{{ crop.match_pct }}% Match</span>
                   </div>
-                  {% endfor %}
+                  <div class="progress rounded-pill my-2" style="height: 7px;">
+                    <div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: {{ crop.match_pct }}%;"></div>
+                  </div>
+                  <p class="small text-muted mb-1">🗓️ <strong>Best Sowing Season:</strong> {{ crop.season }}</p>
+                  <p class="small mb-2 text-secondary">💡 <em>{{ crop.tips }}</em></p>
+                  <div class="d-flex flex-wrap gap-1">
+                    {% for reason in crop.reasons %}
+                    <span class="badge bg-white text-success border border-success border-opacity-25 small fw-medium">✓ {{ reason }}</span>
+                    {% endfor %}
+                  </div>
                 </div>
+                {% endfor %}
               </div>
             </div>
           </div>
 
           <!-- Fertilizer Dose Card -->
           <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-success-subtle">
-              <div class="card-body p-4">
-                <h5 class="fw-bold text-success mb-3">🧮 Fertilizer Requirement Plan</h5>
-                <p class="small text-muted mb-3">Estimated for <strong>{{ fertilizer_plan.acres }} Acres</strong> of <strong>{{ fertilizer_plan.crop_name }}</strong>:</p>
+            <div class="card km-card h-100 p-4 bg-success-subtle border-success border-opacity-25">
+              <span class="badge bg-success text-white rounded-pill px-3 py-1 align-self-start mb-2">ICAR Standard Dosage</span>
+              <h5 class="fw-bold text-success mb-1">🧮 Fertilizer Bag Calculator</h5>
+              <p class="small text-secondary mb-3">
+                Calculated for <strong>{{ fertilizer_plan.acres }} Acres</strong> of <strong>{{ fertilizer_plan.crop_name }}</strong>:
+              </p>
 
-                <div class="bg-white p-3 rounded-3 shadow-sm mb-3">
-                  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                    <span class="fw-semibold">Urea (46% N)</span>
-                    <span class="badge bg-primary fs-6">{{ fertilizer_plan.urea_bags }} Bags <small>({{ fertilizer_plan.urea_kg }} kg)</small></span>
+              <!-- Urea Card -->
+              <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border-start border-4 border-primary">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="fw-bold text-dark">🟦 Urea (यूरिया - 46% N)</div>
+                    <small class="text-muted">Split into 3 top-dressing doses</small>
                   </div>
-                  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                    <span class="fw-semibold">DAP (18% N, 46% P)</span>
-                    <span class="badge bg-success fs-6">{{ fertilizer_plan.dap_bags }} Bags <small>({{ fertilizer_plan.dap_kg }} kg)</small></span>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-semibold">MOP (60% K)</span>
-                    <span class="badge bg-warning text-dark fs-6">{{ fertilizer_plan.mop_bags }} Bags <small>({{ fertilizer_plan.mop_kg }} kg)</small></span>
+                  <div class="text-end">
+                    <span class="badge bg-primary fs-6 rounded-pill px-3">{{ fertilizer_plan.urea_bags }} Bags</span>
+                    <small class="d-block text-muted mt-1">{{ fertilizer_plan.urea_kg }} kg total</small>
                   </div>
                 </div>
+              </div>
 
-                <div class="alert alert-warning border-warning-subtle small mb-0 rounded-3" role="alert">
-                  <strong>⚠️ Advisory Disclaimer:</strong> {{ fertilizer_plan.disclaimer }}
+              <!-- DAP Card -->
+              <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border-start border-4 border-success">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="fw-bold text-dark">🟩 DAP (डीएपी - 18% N, 46% P)</div>
+                    <small class="text-muted">Apply as basal dose at sowing</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-success fs-6 rounded-pill px-3">{{ fertilizer_plan.dap_bags }} Bags</span>
+                    <small class="d-block text-muted mt-1">{{ fertilizer_plan.dap_kg }} kg total</small>
+                  </div>
                 </div>
+              </div>
+
+              <!-- MOP Card -->
+              <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border-start border-4 border-warning">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="fw-bold text-dark">🟨 MOP Potash (पोटाश - 60% K)</div>
+                    <small class="text-muted">Improves grain weight &amp; immunity</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-warning text-dark fs-6 rounded-pill px-3">{{ fertilizer_plan.mop_bags }} Bags</span>
+                    <small class="d-block text-muted mt-1">{{ fertilizer_plan.mop_kg }} kg total</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-warning border-0 small mb-0 rounded-4 shadow-sm mt-auto" role="alert">
+                <strong>⚠️ किसान सलाह:</strong> {{ fertilizer_plan.disclaimer }}
               </div>
             </div>
           </div>
@@ -136,4 +241,21 @@
     </div>
   </div>
 </section>
+
+<script>
+function applySoilPreset(n, p, k, ph, soilType) {
+  document.getElementById("n_val").value = n;
+  document.getElementById("n_range").value = n;
+  document.getElementById("p_val").value = p;
+  document.getElementById("p_range").value = p;
+  document.getElementById("k_val").value = k;
+  document.getElementById("k_range").value = k;
+  document.getElementById("ph_val").value = ph;
+  document.getElementById("ph_range").value = ph;
+  var soilSelect = document.getElementById("soil_type");
+  if (soilSelect) {
+    soilSelect.value = soilType;
+  }
+}
+</script>
 {% endblock %}

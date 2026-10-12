@@ -1,11 +1,15 @@
+import json
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from core.constants.indian_states import INDIAN_STATES
 from core.services.mandi_service import MandiPriceService
-from core.services.disease_service import process_image_and_predict
+from core.services.disease_service import process_image_and_predict, NotTomatoLeafError
 from core.services.segmentation_service import process_leaf_segmentation
 from core.services.crop_service import recommend_crops, calculate_fertilizers
 from core.services.weather_service import fetch_weather_for_city, WeatherServiceError
+from core.services.assistant_service import generate_assistant_response
 from core.models import DiseaseDetectionLog, ContactMessage, CropAdvisoryLog
 
 
@@ -51,10 +55,10 @@ def contact(request):
 # ---------------- Mandi Prices ----------------
 
 def mandi_prices(request):
-    """Live mandi prices from Agmarknet, filterable by state and commodity."""
-    selected_state = request.GET.get("state", "Uttar Pradesh")
-    selected_commodity = request.GET.get("commodity", "")
-    is_search = request.GET.get("search") == "1"
+    """Live mandi prices from Agmarknet 2.0, filterable by state and commodity."""
+    selected_state = request.GET.get("state", "Uttar Pradesh").strip() or "Uttar Pradesh"
+    selected_commodity = request.GET.get("commodity", "").strip()
+    is_search = True
 
     service = MandiPriceService()
     records = []
@@ -66,13 +70,11 @@ def mandi_prices(request):
 
     if selected_state:
         commodities = service.fetch_commodities_for_state(selected_state)
-
-    if is_search and selected_state:
-        records, is_fallback, fallback_notice = service.fetch_prices(selected_state, selected_commodity or None)
+        records, is_fallback, fallback_notice = service.fetch_prices(
+            selected_state, selected_commodity or None
+        )
         if is_fallback:
             info_message = fallback_notice
-    elif not is_search:
-        info_message = "Select a state and commodity, then click Search to view mandi prices."
 
     return render(
         request,
@@ -95,15 +97,16 @@ def mandi_prices(request):
 
 def detect_disease(request):
     """
-    Plant leaf disease detection view.
-    Preprocesses clean RGB images for TensorFlow model prediction,
-    generates leaf contour overlay for visual feedback,
-    runs optional U-Net leaf segmentation pipeline,
-    and logs query to database.
+    Tomato leaf disease detection view.
+    Verifies that the uploaded image is a Tomato leaf, runs 4-Model Deep Ensemble + TTA,
+    generates leaf contour overlay for visual feedback, runs optional U-Net leaf segmentation,
+    and logs valid tomato queries to database.
     """
     context = {
         "result": None,
         "error": None,
+        "error_hi": None,
+        "not_tomato_error": False,
         "confidence": None,
         "results": [],
         "segmented_image": None,
@@ -115,11 +118,11 @@ def detect_disease(request):
 
     if request.method == "POST":
         if "image" not in request.FILES:
-            context["error"] = "Please select a leaf image file to upload."
+            context["error"] = "Please select a Tomato leaf image file to upload."
         else:
             uploaded_file = request.FILES["image"]
             try:
-                # 1. Existing disease classification prediction
+                # 1. Tomato Leaf Verification + Multi-Model Ensemble Prediction
                 res = process_image_and_predict(uploaded_file)
                 
                 context["result"] = res["details"]["title_en"]
@@ -146,6 +149,10 @@ def detect_disease(request):
                     confidence=res["confidence"]
                 )
 
+            except NotTomatoLeafError as ntle:
+                context["not_tomato_error"] = True
+                context["error"] = ntle.message_en
+                context["error_hi"] = ntle.message_hi
             except Exception as e:
                 context["error"] = f"Error analyzing leaf image: {str(e)}"
 
@@ -240,3 +247,26 @@ def government_schemes(request):
 def voice_assistant(request):
     """Interactive Web Speech API Assistant for Indian Farmers."""
     return render(request, "voice_assistant.html")
+
+
+@csrf_exempt
+def voice_assistant_api(request):
+    """Backend JSON API for Multilingual Farmer Voice Assistant."""
+    query = ""
+    lang = "hi-IN"
+
+    if request.method == "POST":
+        try:
+            body = json.loads(request.body.decode("utf-8"))
+            query = body.get("query", "")
+            lang = body.get("lang", "hi-IN")
+        except Exception:
+            query = request.POST.get("query", "")
+            lang = request.POST.get("lang", "hi-IN")
+    else:
+        query = request.GET.get("query", "")
+        lang = request.GET.get("lang", "hi-IN")
+
+    result = generate_assistant_response(query, lang)
+    return JsonResponse(result)
+

@@ -1,70 +1,101 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
+<section class="py-4 py-lg-5">
+  <div class="container" style="max-width: 960px;">
 
-        <div class="text-center mb-4">
-          <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-2 rounded-pill fw-semibold mb-2">🗣️ Hands-Free Accessibility</span>
-          <h2 class="fw-bold text-success">Multilingual Farmer Voice Assistant</h2>
-          <p class="text-muted">Speak your query in Hindi or English, or type below to receive instant agricultural guidance.</p>
+    <!-- Page Header Banner -->
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🗣️ Multilingual Voice &amp; Chat AI</span>
+      <h2 class="fw-bold mb-1">Smart Kisan Voice Assistant</h2>
+      <p class="mb-0 text-white-50">माइक दबाकर हिंदी या अंग्रेज़ी में अपना कोई भी सवाल पूछें — यह <strong>Live Weather</strong>, <strong>Live Agmarknet Mandi</strong>, <strong>ICAR खाद कैलकुलेटर</strong> और <strong>कृषि विज्ञान ज्ञानकोश</strong> से जुड़ा है।</p>
+    </div>
+
+    <!-- Main Voice & Query Card -->
+    <div class="card km-card p-4 text-center mb-4">
+      <div class="card-body p-2">
+
+        <!-- Browser Support Info -->
+        <div id="noSpeechAlert" class="alert alert-info border-0 rounded-4 d-none mb-4" role="alert">
+          ℹ️ आपके ब्राउज़र में वॉइस रिकग्निशन उपलब्ध नहीं है। आप नीचे बॉक्स में अपना सवाल टाइप कर सकते हैं और आवाज़ में उत्तर सुन सकते हैं।
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 text-center p-4 mb-4">
-          <div class="card-body">
-            
-            <!-- Browser Support Warning -->
-            <div id="noSpeechAlert" class="alert alert-info border-0 rounded-3 d-none mb-4" role="alert">
-              ℹ️ Speech recognition is not supported by your current browser. You can type your query in the input box below.
-            </div>
-
-            <!-- Voice Control Button -->
-            <div class="mb-4">
-              <button id="startMicBtn" class="btn btn-success btn-lg rounded-circle p-4 shadow-lg mb-2" style="width: 100px; height: 100px;">
-                <span id="micIcon" style="font-size: 2.2rem;">🎙️</span>
-              </button>
-              <p id="micStatus" class="fw-semibold text-success mt-2 mb-0">Tap microphone & start speaking...</p>
-            </div>
-
-            <!-- Language selector -->
-            <div class="d-flex justify-content-center align-items-center gap-3 mb-4">
-              <label class="fw-semibold text-secondary small">Voice Language:</label>
-              <select id="voiceLangSelect" class="form-select w-auto form-select-sm rounded-pill px-3">
-                <option value="hi-IN" selected>Hindi (हिंदी)</option>
-                <option value="en-IN">English (India)</option>
-              </select>
-            </div>
-
-            <!-- Query Input -->
-            <div class="input-group mb-3 shadow-sm rounded-pill overflow-hidden">
-              <input type="text" id="queryTextInput" class="form-control form-control-lg border-0 px-4" placeholder="Type your farmer query (e.g. Tomato leaf yellowing treatment, Mandi prices in UP)...">
-              <button id="sendQueryBtn" class="btn btn-success px-4" type="button">Ask AI</button>
-            </div>
-
-            <!-- Preset Queries -->
-            <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
-              <button class="btn btn-light border btn-sm rounded-pill sample-query-btn">मेरी टमाटर की फसल में पीले पत्ते आ रहे हैं</button>
-              <button class="btn btn-light border btn-sm rounded-pill sample-query-btn">उत्तर प्रदेश में गेहूं का भाव क्या है?</button>
-              <button class="btn btn-light border btn-sm rounded-pill sample-query-btn">PM-KISAN योजना में आवेदन कैसे करें?</button>
-            </div>
-
-          </div>
+        <!-- Language Selector Pill -->
+        <div class="d-inline-flex align-items-center gap-2 bg-light border rounded-pill px-3 py-1 mb-4">
+          <span class="small fw-semibold text-secondary">🌐 भाषा चुनें (Language):</span>
+          <select id="voiceLangSelect" class="form-select form-select-sm border-0 bg-transparent fw-bold text-success w-auto py-1 shadow-none">
+            <option value="hi-IN" selected>🇮🇳 हिंदी (Hindi)</option>
+            <option value="en-IN">🇮🇳 English (India)</option>
+          </select>
         </div>
 
-        <!-- AI Answer Display Card -->
-        <div id="answerCard" class="card border-0 shadow-sm rounded-4 p-4 d-none bg-success-subtle">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold text-success mb-0">🤖 Krishi Mitra Response</h5>
-            <button id="speakAnswerBtn" class="btn btn-sm btn-success rounded-pill px-3">
-              🔊 Listen Audio
-            </button>
+        <!-- Pulsing Microphone Orb -->
+        <div class="my-2">
+          <button id="startMicBtn" type="button" class="km-mic-orb" title="Click and speak your question">
+            <span id="micIcon">🎙️</span>
+          </button>
+          <p id="micStatus" class="fw-bold text-success mt-3 mb-1 fs-5">माइक पर टैप करें और अपना सवाल बोलें...</p>
+          <small class="text-muted d-block mb-3">Tap microphone to speak, or type any question below</small>
+        </div>
+
+        <!-- Text Query Input Bar -->
+        <div class="input-group input-group-lg mb-4 shadow-sm rounded-pill overflow-hidden border border-success border-opacity-25">
+          <input type="text" id="queryTextInput" class="form-control border-0 px-4 fs-6" placeholder="यहाँ अपना सवाल लिखें (जैसे: गोरखपुर का मौसम, बिहार में आलू का भाव, 2 एकड़ गेहूं में खाद)...">
+          <button id="sendQueryBtn" class="btn btn-success px-4 fw-bold" type="button">
+            Ask AI 🚀
+          </button>
+        </div>
+
+        <!-- Categorized 1-Click Quick Queries -->
+        <div class="text-start bg-light p-3 rounded-4 border">
+          <small class="fw-bold text-secondary d-block mb-2">⚡ 1-Click Sample Questions (क्लिक करके तुरंत पूछें):</small>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="km-chip sample-query-btn">🌤️ गोरखपुर का मौसम कैसा है?</button>
+            <button type="button" class="km-chip sample-query-btn">🛒 उत्तर प्रदेश में गेहूं का भाव क्या है?</button>
+            <button type="button" class="km-chip sample-query-btn">🥔 बिहार में आलू का मंडी रेट बताओ</button>
+            <button type="button" class="km-chip sample-query-btn">🌱 2 एकड़ गेहूं में कितना यूरिया और डीएपी डालें?</button>
+            <button type="button" class="km-chip sample-query-btn">🍅 मेरी टमाटर की फसल में पीले पत्ते आ रहे हैं</button>
+            <button type="button" class="km-chip sample-query-btn">🌾 धान में तना छेदक और झुलसा की दवा बताएं</button>
+            <button type="button" class="km-chip sample-query-btn">🏛️ PM-KISAN और किसान क्रेडिट कार्ड (KCC) योजना क्या है?</button>
+            <button type="button" class="km-chip sample-query-btn">📊 What is the live mandi price of Wheat in Punjab?</button>
           </div>
-          <p id="answerText" class="fs-6 text-dark mb-0"></p>
         </div>
 
       </div>
     </div>
+
+    <!-- AI Answer Display Card -->
+    <div id="answerCard" class="card km-card p-4 d-none mb-4 border-success border-opacity-50" style="background: linear-gradient(180deg, rgba(220, 252, 231, 0.45) 0%, #ffffff 100%);">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pb-3 mb-3 border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <span class="km-brand-logo text-white" style="width: 36px; height: 36px; font-size: 1.1rem;">🤖</span>
+          <div>
+            <h5 class="fw-bold text-success mb-0">Krishi Mitra AI Response</h5>
+            <span id="answerCategoryBadge" class="badge bg-success-subtle text-success border border-success border-opacity-25 rounded-pill px-2 py-1 small">Live Engine</span>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button id="speakAnswerBtn" type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold">
+            🔊 आवाज़ में सुनें (Listen)
+          </button>
+          <button id="stopAudioBtn" type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+            ⏹️ Stop
+          </button>
+        </div>
+      </div>
+
+      <div id="askedQueryDisplay" class="badge bg-light text-dark border rounded-pill px-3 py-2 mb-3 align-self-start fs-6 fw-medium"></div>
+      <div id="answerText" class="fs-6 text-dark mb-0 p-3 bg-white rounded-4 border shadow-sm" style="white-space: pre-line; line-height: 1.7;"></div>
+    </div>
+
+    <!-- Recent Conversation History -->
+    <div id="historySection" class="d-none">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold text-secondary mb-0">💬 Recent Questions in This Session</h6>
+        <button type="button" id="clearHistoryBtn" class="btn btn-sm btn-light border rounded-pill px-3">Clear History</button>
+      </div>
+      <div id="historyList" class="d-flex flex-column gap-3"></div>
+    </div>
+
   </div>
 </section>
 
@@ -79,7 +110,16 @@ document.addEventListener("DOMContentLoaded", function() {
   const noSpeechAlert = document.getElementById("noSpeechAlert");
   const answerCard = document.getElementById("answerCard");
   const answerText = document.getElementById("answerText");
+  const answerCategoryBadge = document.getElementById("answerCategoryBadge");
+  const askedQueryDisplay = document.getElementById("askedQueryDisplay");
   const speakAnswerBtn = document.getElementById("speakAnswerBtn");
+  const stopAudioBtn = document.getElementById("stopAudioBtn");
+  const historySection = document.getElementById("historySection");
+  const historyList = document.getElementById("historyList");
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+  let lastSpeechText = "";
+  let lastSpeechLang = "hi-IN";
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
@@ -92,18 +132,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     recognition.onstart = function() {
       isListening = true;
-      micIcon.textContent = "⏳";
-      micStatus.textContent = "Listening... Speak now!";
-      startMicBtn.classList.remove("btn-success");
-      startMicBtn.classList.add("btn-danger");
+      micIcon.textContent = "🛑";
+      micStatus.textContent = "🔴 सुन रहा हूँ... कृपया अपना सवाल बोलें (Listening...)";
+      startMicBtn.classList.add("listening");
     };
 
     recognition.onend = function() {
       isListening = false;
       micIcon.textContent = "🎙️";
-      micStatus.textContent = "Tap microphone & start speaking...";
-      startMicBtn.classList.remove("btn-danger");
-      startMicBtn.classList.add("btn-success");
+      micStatus.textContent = "माइक पर टैप करें और अपना सवाल बोलें...";
+      startMicBtn.classList.remove("listening");
     };
 
     recognition.onresult = function(event) {
@@ -112,12 +150,11 @@ document.addEventListener("DOMContentLoaded", function() {
       handleAnswer(transcript);
     };
 
-    recognition.onerror = function(event) {
+    recognition.onerror = function() {
       isListening = false;
       micIcon.textContent = "🎙️";
-      micStatus.textContent = "Voice input stopped or not recognized. Try again or type.";
-      startMicBtn.classList.remove("btn-danger");
-      startMicBtn.classList.add("btn-success");
+      micStatus.textContent = "आवाज़ स्पष्ट नहीं आई। फिर से माइक दबाएं या नीचे टाइप करें।";
+      startMicBtn.classList.remove("listening");
     };
 
     startMicBtn.addEventListener("click", function() {
@@ -128,11 +165,10 @@ document.addEventListener("DOMContentLoaded", function() {
         recognition.start();
       }
     });
-
   } else {
     noSpeechAlert.classList.remove("d-none");
     startMicBtn.disabled = true;
-    micStatus.textContent = "Speech recognition unsupported on this browser.";
+    micStatus.textContent = "नीचे बॉक्स में सवाल टाइप करें (Type your question below)";
   }
 
   sendQueryBtn.addEventListener("click", function() {
@@ -141,47 +177,103 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+  queryTextInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && queryTextInput.value.trim()) {
+      e.preventDefault();
+      handleAnswer(queryTextInput.value.trim());
+    }
+  });
+
   document.querySelectorAll(".sample-query-btn").forEach(btn => {
     btn.addEventListener("click", function() {
-      queryTextInput.value = this.textContent;
-      handleAnswer(this.textContent);
+      const cleanText = this.textContent.replace(/^[^\w\u0900-\u097F]+/, "").trim();
+      queryTextInput.value = cleanText;
+      handleAnswer(cleanText);
     });
   });
 
-  function handleAnswer(query) {
-    answerCard.classList.remove("d-none");
-    let ans = "";
-    const qLower = query.toLowerCase();
-
-    if (qLower.includes("पीले") || qLower.includes("yellow") || qLower.includes("पत्ते")) {
-      ans = "टमाटर की पत्तियों का पीला पड़ना नाइट्रोजन की कमी या Early Blight फफूंद का लक्षण हो सकता है। नियंत्रण के लिए नीम तेल (5ml/लीटर) या मैनकोज़ेब (2.5 ग्राम/लीटर) का छिड़काव करें।";
-    } else if (qLower.includes("भाव") || qLower.includes("mandi") || qLower.includes("price")) {
-      ans = "उत्तर प्रदेश एवं भारत के विभिन्न राज्यों के ताज़ा मंडी भाव देखने के लिए कृपया ऊपर दिए गए 'Mandi Prices' पेज पर जाएं।";
-    } else if (qLower.includes("kisan") || qLower.includes("योजना") || qLower.includes("scheme")) {
-      ans = "PM-KISAN योजना के तहत पात्र किसानों को वार्षिक ₹6,000 की वित्तीय सहायता 3 किस्तों में मिलती है। आवेदन हेतु pmkisan.gov.in पर विजिट करें।";
-    } else {
-      ans = `आपके प्रश्न "${query}" के लिए: हमारी सलाह है कि अपनी मिट्टी की जांच कराएं, फसल की नियमित देखरेख करें, और नजदीकी कृषि विज्ञान केंद्र से संपर्क करें।`;
-    }
-
-    answerText.textContent = ans;
-
-    // Optional Auto Speak response
-    speakText(ans);
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener("click", function() {
+      historyList.innerHTML = "";
+      historySection.classList.add("d-none");
+    });
   }
 
-  function speakText(text) {
-    if ('speechSynthesis' in window) {
+  function formatMarkdownBold(text) {
+    const escaped = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    return escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  }
+
+  async function handleAnswer(query) {
+    answerCard.classList.remove("d-none");
+    askedQueryDisplay.textContent = `❓ आपका सवाल: "${query}"`;
+    answerCategoryBadge.textContent = "⏳ लाइव डेटा लाया जा रहा है...";
+    answerText.innerHTML = "<div class='d-flex align-items-center gap-2 text-muted'><span class='spinner-border spinner-border-sm text-success'></span> कृषि मित्र AI आपके प्रश्न का विश्लेषण कर रहा है...</div>";
+    sendQueryBtn.disabled = true;
+
+    try {
+      const response = await fetch("{% url 'voice_assistant_api' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query,
+          lang: voiceLangSelect.value,
+        }),
+      });
+      const data = await response.json();
+
+      const rawAns = data.answer || "";
+      lastSpeechText = data.speech_text || rawAns;
+      lastSpeechLang = data.lang || voiceLangSelect.value;
+
+      answerCategoryBadge.textContent = data.category || "🤖 Krishi Mitra AI";
+      answerText.innerHTML = formatMarkdownBold(rawAns);
+
+      // Add to conversation history
+      historySection.classList.remove("d-none");
+      const item = document.createElement("div");
+      item.className = "card km-card p-3";
+      item.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong class="text-success">❓ ${query.replace(/</g, "&lt;")}</strong>
+          <span class="badge bg-success-subtle text-success rounded-pill">${data.category || "AI"}</span>
+        </div>
+        <div class="small text-dark" style="white-space: pre-line; line-height: 1.6;">${formatMarkdownBold(rawAns)}</div>
+      `;
+      historyList.prepend(item);
+
+      speakText(lastSpeechText, lastSpeechLang);
+    } catch (err) {
+      answerCategoryBadge.textContent = "⚠️ Connection Error";
+      answerText.textContent = "सर्वर से संपर्क करने में समस्या हुई। कृपया पुनः प्रयास करें।";
+    } finally {
+      sendQueryBtn.disabled = false;
+    }
+  }
+
+  function speakText(text, langCode) {
+    if ('speechSynthesis' in window && text) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = voiceLangSelect.value;
+      utterance.lang = langCode || voiceLangSelect.value;
       window.speechSynthesis.speak(utterance);
     }
   }
 
   speakAnswerBtn.addEventListener("click", function() {
-    speakText(answerText.textContent);
+    speakText(lastSpeechText || answerText.textContent, lastSpeechLang);
   });
 
+  stopAudioBtn.addEventListener("click", function() {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  });
 });
 </script>
 {% endblock %}

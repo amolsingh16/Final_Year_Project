@@ -1,156 +1,242 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container">
-    <div class="text-center mb-5">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🏛️ Central & State Initiatives</span>
-      <h2 class="fw-bold text-success">Government Agriculture Schemes Directory</h2>
-      <p class="text-muted">Explore official welfare schemes, credit cards, insurance, and financial benefits for Indian farmers.</p>
-      
-      <div class="alert alert-info border-0 shadow-sm rounded-4 d-inline-block px-4 py-2 mt-2" role="alert">
-        <small>ℹ️ <strong>Note:</strong> Krishi Mitra provides informational guidance. Click <strong>Apply via Official Portal</strong> to visit the official Government of India websites directly.</small>
+
+    <!-- Page Header Banner -->
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🏛️ Central &amp; State Farmer Welfare</span>
+      <h2 class="fw-bold mb-1">Government Agriculture Schemes Directory</h2>
+      <p class="mb-0 text-white-50">भारत सरकार की प्रमुख किसान कल्याण योजनाएं, पात्रता, आवश्यक दस्तावेज़ और सीधे आधिकारिक पोर्टल (Official Portal) के लिंक।</p>
+    </div>
+
+    <!-- Instant Filter & Search Bar -->
+    <div class="card km-card p-3 mb-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex flex-wrap gap-2" id="schemeCategoryBtns">
+          <button type="button" class="km-chip active" data-filter="all">All Schemes (8)</button>
+          <button type="button" class="km-chip" data-filter="income">💰 Income &amp; Credit</button>
+          <button type="button" class="km-chip" data-filter="insurance">🛡️ Crop Insurance</button>
+          <button type="button" class="km-chip" data-filter="subsidy">🚜 Irrigation &amp; Subsidy</button>
+          <button type="button" class="km-chip" data-filter="market">🛒 Market &amp; Soil</button>
+        </div>
+        <div style="min-width: 250px;">
+          <input type="text" id="schemeSearchInput" class="form-control rounded-pill px-3" placeholder="🔎 योजना खोजें (e.g. PM-KISAN, Solar, KCC)...">
+        </div>
       </div>
     </div>
 
-    <div class="row g-4">
-      <!-- PM-KISAN -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-success">Direct Income Support</span>
-                <span class="text-muted small">Ministry of Agri</span>
-              </div>
-              <h5 class="fw-bold text-dark">PM-KISAN Samman Nidhi</h5>
-              <p class="text-secondary small">Financial benefit of ₹6,000 per year in three equal installments transferred directly into bank accounts of landholding farmer families.</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Eligibility:</strong> Small & Marginal landholder farmers</li>
-                <li><strong>Required:</strong> Aadhaar card, Bank account, Land records</li>
-              </ul>
+    <div class="row g-4" id="schemesGrid">
+      <!-- 1. PM-KISAN -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="income">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">💰</span>
+              <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">₹6,000 / Year</span>
             </div>
-            <a href="https://pmkisan.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Apply via Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">PM-KISAN Samman Nidhi</h5>
+            <p class="small text-success fw-semibold mb-2">पीएम किसान सम्मान निधि योजना</p>
+            <p class="text-secondary small">Direct income support of ₹6,000 per year in three equal installments (₹2,000 every 4 months) transferred via DBT into farmers' bank accounts.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Eligibility:</strong> All landholding farmer families</li>
+              <li><strong>Documents:</strong> Aadhaar Card, Land Khasra/Khatauni, Bank Passbook</li>
+            </ul>
           </div>
+          <a href="https://pmkisan.gov.in/" target="_blank" rel="noopener" class="btn btn-success w-100 rounded-pill fw-semibold">
+            Apply via Official Portal ↗
+          </a>
         </div>
       </div>
 
-      <!-- PMFBY -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-primary">Crop Insurance</span>
-                <span class="text-muted small">Risk Coverage</span>
-              </div>
-              <h5 class="fw-bold text-dark">PM Fasal Bima Yojana (PMFBY)</h5>
-              <p class="text-secondary small">Comprehensive crop insurance scheme covering yield losses due to non-preventable natural risks (drought, flood, pests, disease).</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Premium:</strong> 2% for Kharif, 1.5% for Rabi crops</li>
-                <li><strong>Coverage:</strong> Sowing to post-harvest risks</li>
-              </ul>
+      <!-- 2. PMFBY -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="insurance">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">🛡️</span>
+              <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1">Crop Insurance</span>
             </div>
-            <a href="https://pmfby.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Apply via Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">PM Fasal Bima Yojana (PMFBY)</h5>
+            <p class="small text-success fw-semibold mb-2">प्रधानमंत्री फसल बीमा योजना</p>
+            <p class="text-secondary small">Comprehensive crop insurance against natural calamities, drought, flood, unseasonal rainfall, pests, and plant diseases.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Farmer Premium:</strong> 2% Kharif, 1.5% Rabi, 5% Commercial</li>
+              <li><strong>Claim Helpline:</strong> 14447 (72-hour loss intimation)</li>
+            </ul>
           </div>
+          <a href="https://pmfby.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Apply via Official Portal ↗
+          </a>
         </div>
       </div>
 
-      <!-- Kisan Credit Card -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-warning text-dark">Agri Credit</span>
-                <span class="text-muted small">Low Interest</span>
-              </div>
-              <h5 class="fw-bold text-dark">Kisan Credit Card (KCC)</h5>
-              <p class="text-secondary small">Provides adequate and timely credit to farmers for crop cultivation, post-harvest expenses, and allied agricultural activities at subsidized 4% interest rate.</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Limit:</strong> Up to ₹3 Lakh collateral-free loan</li>
-                <li><strong>Scope:</strong> Crops, Animal Husbandry & Fisheries</li>
-              </ul>
+      <!-- 3. Kisan Credit Card -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="income">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">💳</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-3 py-1">4% Interest Loan</span>
             </div>
-            <a href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Apply via Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">Kisan Credit Card (KCC)</h5>
+            <p class="small text-success fw-semibold mb-2">किसान क्रेडिट कार्ड योजना</p>
+            <p class="text-secondary small">Timely, low-interest credit for seeds, fertilizers, pesticides, and allied activities (dairy, fisheries) at an effective 4% p.a. rate.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Collateral-Free:</strong> Up to ₹1.60 Lakh – ₹3 Lakh limit</li>
+              <li><strong>Scope:</strong> Crops, Dairy, Poultry &amp; Fisheries</li>
+            </ul>
           </div>
+          <a href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Apply via Official Portal ↗
+          </a>
         </div>
       </div>
 
-      <!-- Soil Health Card -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-info text-dark">Soil Quality</span>
-                <span class="text-muted small">Testing</span>
-              </div>
-              <h5 class="fw-bold text-dark">Soil Health Card Scheme</h5>
-              <p class="text-secondary small">Provides soil nutrient status report (12 parameters) to farmers along with recommended fertilizer doses to improve crop productivity.</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Frequency:</strong> Issued once every 2 years</li>
-                <li><strong>Benefit:</strong> Reduces excess fertilizer costs</li>
-              </ul>
+      <!-- 4. PM-KUSUM Solar Pump -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="subsidy">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">☀️</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-3 py-1">60% Solar Subsidy</span>
             </div>
-            <a href="https://soilhealth.dac.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">PM-KUSUM Solar Pump Scheme</h5>
+            <p class="small text-success fw-semibold mb-2">पीएम कुसुम सोलर पंप सब्सिडी</p>
+            <p class="text-secondary small">Install standalone solar agricultural water pumps (3 HP to 10 HP) with up to 60% Central + State government subsidy and zero diesel cost.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Subsidy:</strong> 60% Govt Grant + 30% Bank Loan</li>
+              <li><strong>Farmer Share:</strong> Only 10% upfront cost</li>
+            </ul>
           </div>
+          <a href="https://pmkusum.mnre.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Official Portal ↗
+          </a>
         </div>
       </div>
 
-      <!-- PM Krishi Sinchayee Yojana -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-teal bg-success text-white">Micro-Irrigation</span>
-                <span class="text-muted small">Water Efficiency</span>
-              </div>
-              <h5 class="fw-bold text-dark">PM Krishi Sinchayee Yojana</h5>
-              <p class="text-secondary small">Enhance physical access to water on farm and expand cultivable area under assured micro-irrigation ('Per Drop More Crop').</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Subsidy:</strong> 45% - 55% for Drip/Sprinkler sets</li>
-                <li><strong>Focus:</strong> Water conservation and precision farming</li>
-              </ul>
+      <!-- 5. Soil Health Card -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="market">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">🧪</span>
+              <span class="badge bg-info-subtle text-info-emphasis rounded-pill px-3 py-1">12 Soil Parameters</span>
             </div>
-            <a href="https://pmksy.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">Soil Health Card Scheme</h5>
+            <p class="small text-success fw-semibold mb-2">मृदा स्वास्थ्य कार्ड योजना</p>
+            <p class="text-secondary small">Provides scientific testing of 12 soil parameters (N, P, K, pH, EC, OC, S, Zn, Fe, Cu, Mn, B) with crop-wise fertilizer recommendations.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Cycle:</strong> Renewed every 2 years per farm plot</li>
+              <li><strong>Benefit:</strong> Saves 20–25% on chemical fertilizer cost</li>
+            </ul>
           </div>
+          <a href="https://soilhealth.dac.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Official Portal ↗
+          </a>
         </div>
       </div>
 
-      <!-- Sub-Mission on Agricultural Mechanization -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-secondary">Machinery Subsidy</span>
-                <span class="text-muted small">Equipment</span>
-              </div>
-              <h5 class="fw-bold text-dark">Agri Machinery Subsidy (SMAM)</h5>
-              <p class="text-secondary small">Financial assistance for purchasing agricultural equipment (Tractors, Harvesters, Rotavators, Seed drills) and setting up Custom Hiring Centers.</p>
-              <ul class="small text-muted ps-3 mb-3">
-                <li><strong>Subsidy:</strong> 40% - 80% based on farmer category</li>
-                <li><strong>Target:</strong> Small & marginal farmers</li>
-              </ul>
+      <!-- 6. PM Krishi Sinchayee Yojana -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="subsidy">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">💧</span>
+              <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">Per Drop More Crop</span>
             </div>
-            <a href="https://agrimachinery.nic.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill">
-              Official Portal ↗
-            </a>
+            <h5 class="fw-bold text-dark mb-1">PM Krishi Sinchayee Yojana</h5>
+            <p class="small text-success fw-semibold mb-2">प्रधानमंत्री कृषि सिंचाई योजना</p>
+            <p class="text-secondary small">Financial subsidy for installing Drip and Sprinkler micro-irrigation systems to conserve water and boost yield.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Subsidy:</strong> 55% for Small/Marginal, 45% for Others</li>
+              <li><strong>Water Saving:</strong> Up to 50% water &amp; fertilizer efficiency</li>
+            </ul>
           </div>
+          <a href="https://pmksy.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Official Portal ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- 7. SMAM Agri Machinery -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="subsidy">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">🚜</span>
+              <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1">40%–80% Subsidy</span>
+            </div>
+            <h5 class="fw-bold text-dark mb-1">Agri Machinery Subsidy (SMAM)</h5>
+            <p class="small text-success fw-semibold mb-2">कृषि यंत्र सब्सिडी योजना</p>
+            <p class="text-secondary small">Grant support for buying Rotavators, Seed Drills, Power Tillers, Drones, Harvesters, and setting up Custom Hiring Centers (CHC).</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Individual Subsidy:</strong> 40% to 50% on farm machines</li>
+              <li><strong>FPO / CHC:</strong> Up to 80% subsidy for group banks</li>
+            </ul>
+          </div>
+          <a href="https://agrimachinery.nic.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Official Portal ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- 8. e-NAM National Agriculture Market -->
+      <div class="col-md-6 col-lg-4 scheme-item" data-category="market">
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="km-icon-box">📈</span>
+              <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1">1,389+ Mandis</span>
+            </div>
+            <h5 class="fw-bold text-dark mb-1">e-NAM Digital Mandi Portal</h5>
+            <p class="small text-success fw-semibold mb-2">राष्ट्रीय कृषि बाज़ार (ई-नाम)</p>
+            <p class="text-secondary small">Pan-India electronic trading portal connecting APMC mandis for transparent online bidding and direct bank payment to farmers.</p>
+            <ul class="small text-muted ps-3 mb-3">
+              <li><strong>Toll-Free Help:</strong> 1800-270-0224</li>
+              <li><strong>Benefit:</strong> Better price discovery without middlemen</li>
+            </ul>
+          </div>
+          <a href="https://enam.gov.in/" target="_blank" rel="noopener" class="btn btn-outline-success w-100 rounded-pill fw-semibold">
+            Official Portal ↗
+          </a>
         </div>
       </div>
     </div>
+
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var items = Array.from(document.querySelectorAll(".scheme-item"));
+  var filterBtns = Array.from(document.querySelectorAll("#schemeCategoryBtns button"));
+  var searchInput = document.getElementById("schemeSearchInput");
+  var currentCategory = "all";
+
+  function applySchemeFilters() {
+    var q = (searchInput ? searchInput.value.trim().toLowerCase() : "");
+    items.forEach(function(item) {
+      var cat = item.getAttribute("data-category");
+      var text = item.textContent.toLowerCase();
+      var matchesCat = (currentCategory === "all" || cat === currentCategory);
+      var matchesText = (!q || text.indexOf(q) !== -1);
+      item.style.display = (matchesCat && matchesText) ? "" : "none";
+    });
+  }
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      filterBtns.forEach(function(b) { b.classList.remove("active"); });
+      this.classList.add("active");
+      currentCategory = this.getAttribute("data-filter") || "all";
+      applySchemeFilters();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applySchemeFilters);
+  }
+});
+</script>
 {% endblock %}

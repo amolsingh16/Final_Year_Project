@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container">
-    
-    <div class="text-center mb-5">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">📞 Farmer Support & Advisory</span>
-      <h2 class="fw-bold text-success">Contact Krishi Mitra Team</h2>
-      <p class="text-muted">Have a query regarding crop disease, soil health, or mandi prices? Send us a message or contact our helpline.</p>
+
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">📞 24×7 Farmer Support &amp; Advisory</span>
+      <h2 class="fw-bold mb-1">Contact Krishi Mitra Support Team</h2>
+      <p class="mb-0 text-white-50">फसल रोग, मिट्टी परीक्षण, या मंडी भाव से जुड़े किसी भी प्रश्न के लिए हमें संदेश भेजें या किसान हेल्पलाइन पर कॉल करें।</p>
     </div>
 
     <!-- Django Alert Messages -->
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4" role="alert">
           {{ message }}
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -22,9 +22,9 @@
     <div class="row g-4">
       <!-- Contact Form -->
       <div class="col-lg-7">
-        <div class="card border-0 shadow-sm rounded-4 p-4">
-          <h4 class="fw-bold text-success mb-3">Send a Farmer Query</h4>
-          
+        <div class="card km-card p-4 h-100">
+          <h4 class="fw-bold text-success mb-3">📝 Send a Farmer Query (अपना सवाल भेजें)</h4>
+
           <form method="POST" action="{% url 'contact' %}">
             {% csrf_token %}
             <div class="row g-3">
@@ -47,7 +47,7 @@
                 <label class="form-label fw-semibold" for="subject">Query Subject</label>
                 <select class="form-select rounded-3" id="subject" name="subject">
                   <option value="Disease Help">Plant Disease Advisory</option>
-                  <option value="Soil & Fertilizer">Soil & Fertilizer Guidance</option>
+                  <option value="Soil & Fertilizer">Soil &amp; Fertilizer Guidance</option>
                   <option value="Mandi Prices">Mandi Price Query</option>
                   <option value="Government Schemes">Government Scheme Eligibility</option>
                   <option value="Other">General Feedback</option>
@@ -60,7 +60,7 @@
               </div>
 
               <div class="col-12 mt-3">
-                <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
+                <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 fw-bold shadow-sm">
                   📩 Submit Query
                 </button>
               </div>
@@ -71,17 +71,22 @@
 
       <!-- Support Details Card -->
       <div class="col-lg-5">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-success text-white mb-4">
-          <h5 class="fw-bold mb-3">📞 Emergency Farmer Helpline</h5>
-          <p class="small mb-3 text-white-50">Free government toll-free helpline service available 6 AM to 10 PM daily in all local languages.</p>
-          
-          <div class="p-3 bg-white text-dark rounded-3 shadow-sm mb-3 text-center">
-            <small class="text-muted d-block fw-semibold">Kisan Call Center (Toll Free)</small>
-            <span class="fs-4 fw-bold text-success">1800-180-1551</span>
+        <div class="card border-0 shadow rounded-4 p-4 text-white mb-4" style="background: linear-gradient(135deg, #0f3d26 0%, #166534 100%);">
+          <h5 class="fw-bold mb-2">📞 Emergency Farmer Helplines</h5>
+          <p class="small mb-3 text-white-50">Free Government of India toll-free helplines available 6 AM to 10 PM daily in local languages.</p>
+
+          <div class="p-3 bg-white text-dark rounded-4 shadow-sm mb-3 text-center">
+            <small class="text-muted d-block fw-semibold">Kisan Call Center (Toll-Free)</small>
+            <a href="tel:18001801551" class="fs-3 fw-bold text-success text-decoration-none">1800-180-1551</a>
           </div>
 
-          <div class="d-flex align-items-center gap-3 mb-2">
-            <span class="fs-5">📧</span>
+          <div class="p-3 bg-white text-dark rounded-4 shadow-sm mb-3 text-center">
+            <small class="text-muted d-block fw-semibold">PMFBY Crop Insurance Helpline</small>
+            <span class="fs-4 fw-bold text-primary">14447</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-3 mt-2">
+            <span class="fs-4">📧</span>
             <div>
               <small class="text-white-50 d-block">Project Support Email</small>
               <span class="fw-semibold">support@krishimitra.org</span>
@@ -89,31 +94,31 @@
           </div>
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 p-4">
+        <div class="card km-card p-4">
           <h6 class="fw-bold text-success mb-3">❓ Frequently Asked Questions</h6>
           <div class="accordion accordion-flush" id="faqAccordion">
-            <div class="accordion-item border-0">
+            <div class="accordion-item border-0 bg-transparent">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed px-0 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                  How does disease detection work?
+                <button class="accordion-button collapsed px-0 fw-semibold bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  How does AI disease detection work?
                 </button>
               </h2>
               <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body px-0 text-muted small">
-                  Upload a photo of your infected leaf. Our trained Deep Learning Convolutional Neural Network (CNN) analyzes the symptoms and provides tailored treatment guides.
+                  Upload a photo of your infected leaf. Our trained Deep Learning Convolutional Neural Network (CNN) and U-Net segmentation models analyze the leaf and provide organic and chemical remedies.
                 </div>
               </div>
             </div>
 
-            <div class="accordion-item border-0">
+            <div class="accordion-item border-0 bg-transparent">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed px-0 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                  Are Mandi prices live?
+                <button class="accordion-button collapsed px-0 fw-semibold bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Are Mandi prices &amp; Weather live?
                 </button>
               </h2>
               <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body px-0 text-muted small">
-                  Yes, prices are fetched directly from the official Agmarknet API (Ministry of Agriculture & Farmers Welfare, Govt of India).
+                  Yes! Mandi prices are fetched live from Agmarknet 2.0 (Govt of India) across all 36 States/UTs, and localized weather is powered by Open-Meteo.
                 </div>
               </div>
             </div>

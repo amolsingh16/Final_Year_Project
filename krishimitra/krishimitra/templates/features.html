@@ -1,101 +1,88 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-4 py-lg-5">
   <div class="container">
-    
-    <div class="text-center mb-5" data-aos="fade-up">
-      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold mb-2">🚀 System Capabilities</span>
-      <h2 class="fw-bold text-success">Krishi Mitra Feature Suite</h2>
-      <p class="text-muted">Explore AI tools, weather insights, market prices, and regional assistance designed for modern farming.</p>
+
+    <div class="km-page-header">
+      <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">🚀 System Architecture &amp; Capabilities</span>
+      <h2 class="fw-bold mb-1">Krishi Mitra Complete Feature Suite</h2>
+      <p class="mb-0 text-white-50">Explore our integrated AI models, live government APIs, and bilingual tools built for Indian agriculture.</p>
     </div>
 
     <div class="row g-4">
-      
       <!-- Disease Detection -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">🩺</div>
-              <h5 class="fw-bold text-success">AI Plant Disease Detection</h5>
-              <p class="text-muted small">Upload a leaf photo for instant deep-learning disease diagnosis, visual contour overlay, and treatment guides.</p>
-            </div>
-            <a href="{% url 'detect' %}" class="btn btn-success rounded-pill w-100">Try Disease Scanner ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">🩺</div>
+            <h5 class="fw-bold text-success">AI Plant Disease Detection</h5>
+            <p class="text-muted small">Upload a leaf photo for instant deep-learning CNN disease diagnosis, U-Net lesion segmentation, and organic/chemical treatment guides.</p>
           </div>
+          <a href="{% url 'detect' %}" class="btn btn-success rounded-pill w-100 fw-semibold">Try Disease Scanner ↗</a>
         </div>
       </div>
 
       <!-- Crop & Fertilizer Recommendation -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="50">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">🌾</div>
-              <h5 class="fw-bold text-success">Crop & Fertilizer Advisory</h5>
-              <p class="text-muted small">Input soil parameters (N, P, K, pH) to receive crop suitability rankings and fertilizer bag calculations.</p>
-            </div>
-            <a href="{% url 'crop_recommendation' %}" class="btn btn-success rounded-pill w-100">Open Soil Advisor ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">🌾</div>
+            <h5 class="fw-bold text-success">Crop &amp; Fertilizer Advisory</h5>
+            <p class="text-muted small">Use 1-click regional soil presets or input soil N, P, K, pH parameters for crop suitability rankings and exact Urea/DAP/MOP bag counts.</p>
           </div>
+          <a href="{% url 'crop_recommendation' %}" class="btn btn-success rounded-pill w-100 fw-semibold">Open Soil Advisor ↗</a>
         </div>
       </div>
 
       <!-- Live Weather -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">☁️</div>
-              <h5 class="fw-bold text-success">Live Weather & Ag-Forecast</h5>
-              <p class="text-muted small">Real-time district weather, 7-day precipitation forecasts, and tailored field spraying/irrigation advice.</p>
-            </div>
-            <a href="{% url 'weather' %}" class="btn btn-success rounded-pill w-100">Check Weather ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">☁️</div>
+            <h5 class="fw-bold text-success">Live Weather &amp; Ag-Forecast</h5>
+            <p class="text-muted small">Real-time Indian district weather in Hindi/English, 7-day precipitation forecasts, and tailored field spraying/irrigation advice.</p>
           </div>
+          <a href="{% url 'weather' %}" class="btn btn-success rounded-pill w-100 fw-semibold">Check Weather ↗</a>
         </div>
       </div>
 
       <!-- Mandi Prices -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">🛒</div>
-              <h5 class="fw-bold text-success">Live Mandi Market Rates</h5>
-              <p class="text-muted small">Track wholesale market prices across Indian states updated directly from Agmarknet API.</p>
-            </div>
-            <a href="{% url 'mandi_prices' %}" class="btn btn-success rounded-pill w-100">View Mandi Prices ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">🛒</div>
+            <h5 class="fw-bold text-success">Live Mandi Market Rates</h5>
+            <p class="text-muted small">Track daily wholesale crop prices across all 36 Indian States &amp; UTs powered by Agmarknet 2.0 and regional APMC benchmarks.</p>
           </div>
+          <a href="{% url 'mandi_prices' %}" class="btn btn-success rounded-pill w-100 fw-semibold">View Mandi Prices ↗</a>
         </div>
       </div>
 
       <!-- Government Schemes -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">🏛️</div>
-              <h5 class="fw-bold text-success">Govt Agriculture Schemes</h5>
-              <p class="text-muted small">Search PM-KISAN, PMFBY, KCC, Soil Health Card, and irrigation subsidies with official application links.</p>
-            </div>
-            <a href="{% url 'schemes' %}" class="btn btn-success rounded-pill w-100">Explore Schemes ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">🏛️</div>
+            <h5 class="fw-bold text-success">Govt Agriculture Schemes</h5>
+            <p class="text-muted small">Filter and search PM-KISAN, PMFBY, KCC, PM-KUSUM Solar Pump, Soil Health Card, and e-NAM with direct official links.</p>
           </div>
+          <a href="{% url 'schemes' %}" class="btn btn-success rounded-pill w-100 fw-semibold">Explore Schemes ↗</a>
         </div>
       </div>
 
       <!-- Voice Assistant -->
       <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="250">
-        <div class="card border-0 shadow-sm rounded-4 h-100 p-3 hover-lift">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <div class="fs-1 mb-2">🗣️</div>
-              <h5 class="fw-bold text-success">Multilingual Voice Support</h5>
-              <p class="text-muted small">Hands-free speech recognition in Hindi & English with text-to-speech audio diagnosis readout.</p>
-            </div>
-            <a href="{% url 'voice_assistant' %}" class="btn btn-success rounded-pill w-100">Open Voice Assistant ↗</a>
+        <div class="card km-card h-100 p-4 hover-lift d-flex flex-column justify-content-between">
+          <div>
+            <div class="km-icon-box mb-3">🗣️</div>
+            <h5 class="fw-bold text-success">Multilingual Voice AI</h5>
+            <p class="text-muted small">Hands-free speech recognition in Hindi &amp; English connected to live weather, mandi prices, fertilizer calculator, and agronomy knowledge.</p>
           </div>
+          <a href="{% url 'voice_assistant' %}" class="btn btn-warning text-dark rounded-pill w-100 fw-bold">Open Voice Assistant ↗</a>
         </div>
       </div>
-
     </div>
+
   </div>
 </section>
 {% endblock %}

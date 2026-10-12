@@ -12,4 +12,5 @@ urlpatterns = [
     path('weather/', views.weather_advisory, name='weather'),
     path('schemes/', views.government_schemes, name='schemes'),
     path('voice-assistant/', views.voice_assistant, name='voice_assistant'),
+    path('api/voice-assistant/', views.voice_assistant_api, name='voice_assistant_api'),
 ]

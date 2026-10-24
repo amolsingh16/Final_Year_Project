@@ -1,0 +1,13 @@
+Class,Precision,Recall,F1_Score,Support
+Tomato_Bacterial_spot,0.9896,0.8897,0.9370,426
+Tomato_Early_blight,0.7273,0.8000,0.7619,200
+Tomato_Late_blight,0.9201,0.8206,0.8675,379
+Tomato_Leaf_Mold,0.9330,0.8743,0.9027,191
+Tomato_Septoria_leaf_spot,0.9275,0.9014,0.9143,355
+Tomato_Spider_mites_Two_spotted_spider_mite,0.8657,0.7292,0.7916,336
+Tomato__Target_Spot,0.7436,0.6192,0.6757,281
+Tomato__Tomato_YellowLeaf__Curl_Virus,0.9525,0.9688,0.9606,642
+Tomato__Tomato_mosaic_virus,0.8675,0.9600,0.9114,75
+Tomato_healthy,0.6557,1.0000,0.7920,318
+macro avg,0.8582,0.8563,0.8515,3203
+weighted avg,0.8767,0.8642,0.8648,3203

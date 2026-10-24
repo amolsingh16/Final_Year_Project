@@ -1,0 +1,7 @@
+Model,Accuracy,Accuracy_Pct,Precision_Macro,Precision_Weighted,Recall_Macro,Recall_Weighted,F1_Macro,F1_Weighted,Loss_CrossEntropy
+CNN Baseline (Single View),0.8595,85.95%,0.8510,0.8729,0.8515,0.8595,0.8449,0.8602,0.5167
+CNN Baseline (with TTA),0.8642,86.42%,0.8582,0.8767,0.8563,0.8642,0.8515,0.8648,0.4964
+MobileNetV2 (Single View),0.8776,87.76%,0.8506,0.8960,0.8679,0.8776,0.8419,0.8778,0.4392
+MobileNetV2 (with TTA),0.8820,88.20%,0.8559,0.9010,0.8722,0.8820,0.8463,0.8824,0.3864
+MobileNetV2 Focal (with TTA),0.8901,89.01%,0.8774,0.8965,0.8735,0.8901,0.8719,0.8906,0.3195
+KrishiMitra (Proposed Ensemble + TTA),0.9213,92.13%,0.9041,0.9263,0.9129,0.9213,0.9042,0.9211,0.2573

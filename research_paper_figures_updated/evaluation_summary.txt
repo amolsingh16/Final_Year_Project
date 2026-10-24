@@ -1,0 +1,27 @@
+================================================================================
+KRISHI MITRA – VERIFIED AI/ML EVALUATION SUMMARY FOR RESEARCH PAPER
+================================================================================
+Evaluation Date: October 2026
+Test Dataset: PlantVillage Tomato Subset (3,203 held-out test images, 10 classes)
+Preprocessing: Rescale 1.0/255.0, Target Size 224x224, Categorical Softmax
+Test-Time Augmentation (TTA): 2-View Horizontal Flip (0.65 Original + 0.35 Flip)
+
+1. OVERALL MODEL COMPARISON (VERIFIED TEST SET METRICS):
+--------------------------------------------------------------------------------
+Model Name                       Accuracy   Precision(Macro) Recall(Macro)  F1(Macro)   CrossEntropy Loss
+--------------------------------------------------------------------------------
+MobileNetV2 (with TTA)           88.20%     0.8559           0.8722         0.8463      0.3864
+CNN Baseline (with TTA)          86.42%     0.8582           0.8563         0.8515      0.4964
+KrishiMitra (Proposed Ensemble)  92.13%     0.9041           0.9129         0.9042      0.2573
+--------------------------------------------------------------------------------
+
+2. OLD SCREENSHOT VALUES VS. NEWLY VERIFIED VALUES:
+--------------------------------------------------------------------------------
+Metric              Old Screenshot (MobileNet / CNN / KrishiMitra)   Newly Verified (MobileNet / CNN / KrishiMitra)
+--------------------------------------------------------------------------------
+Accuracy            87.76% / 85.95% / 88.32%                         88.20% / 86.42% / 92.13%
+Precision (Macro)   85.06% / 85.10% / 87.03%                         0.8559 / 0.8582 / 0.9041
+Recall (Macro)      86.79% / 85.15% / 86.64%                         0.8722 / 0.8563 / 0.9129
+F1-Score (Macro)    84.19% / 84.49% / 86.50%                         0.8463 / 0.8515 / 0.9042
+CrossEntropy Loss   0.4445 / 0.5190 / 0.3521                         0.3864 / 0.4964 / 0.2573
+--------------------------------------------------------------------------------
